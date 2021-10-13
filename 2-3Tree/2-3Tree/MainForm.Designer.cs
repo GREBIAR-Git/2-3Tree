@@ -35,10 +35,10 @@ namespace _2_3Tree
             this.PanelMenuItem = new System.Windows.Forms.TableLayoutPanel();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.textBoxAdd = new System.Windows.Forms.TextBox();
-            this.buttonDel = new System.Windows.Forms.Button();
             this.textBoxDel = new System.Windows.Forms.TextBox();
-            this.buttonFind = new System.Windows.Forms.Button();
             this.textBoxFind = new System.Windows.Forms.TextBox();
+            this.buttonFind = new System.Windows.Forms.Button();
+            this.buttonDel = new System.Windows.Forms.Button();
             this.PanelMain.SuspendLayout();
             this.PanelMenuItem.SuspendLayout();
             this.SuspendLayout();
@@ -110,16 +110,7 @@ namespace _2_3Tree
             this.textBoxAdd.Name = "textBoxAdd";
             this.textBoxAdd.Size = new System.Drawing.Size(140, 29);
             this.textBoxAdd.TabIndex = 1;
-            // 
-            // buttonDel
-            // 
-            this.buttonDel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDel.Location = new System.Drawing.Point(143, 48);
-            this.buttonDel.Name = "buttonDel";
-            this.buttonDel.Size = new System.Drawing.Size(134, 38);
-            this.buttonDel.TabIndex = 2;
-            this.buttonDel.Text = "Удалить";
-            this.buttonDel.UseVisualStyleBackColor = true;
+            this.textBoxAdd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxAdd_KeyPress_OnlyDigit);
             // 
             // textBoxDel
             // 
@@ -129,6 +120,15 @@ namespace _2_3Tree
             this.textBoxDel.Name = "textBoxDel";
             this.textBoxDel.Size = new System.Drawing.Size(140, 29);
             this.textBoxDel.TabIndex = 3;
+            // 
+            // textBoxFind
+            // 
+            this.textBoxFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxFind.Location = new System.Drawing.Point(0, 95);
+            this.textBoxFind.Margin = new System.Windows.Forms.Padding(0);
+            this.textBoxFind.Name = "textBoxFind";
+            this.textBoxFind.Size = new System.Drawing.Size(140, 29);
+            this.textBoxFind.TabIndex = 5;
             // 
             // buttonFind
             // 
@@ -140,14 +140,15 @@ namespace _2_3Tree
             this.buttonFind.Text = "Найти";
             this.buttonFind.UseVisualStyleBackColor = true;
             // 
-            // textBoxFind
+            // buttonDel
             // 
-            this.textBoxFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxFind.Location = new System.Drawing.Point(0, 95);
-            this.textBoxFind.Margin = new System.Windows.Forms.Padding(0);
-            this.textBoxFind.Name = "textBoxFind";
-            this.textBoxFind.Size = new System.Drawing.Size(140, 29);
-            this.textBoxFind.TabIndex = 5;
+            this.buttonDel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDel.Location = new System.Drawing.Point(143, 48);
+            this.buttonDel.Name = "buttonDel";
+            this.buttonDel.Size = new System.Drawing.Size(134, 38);
+            this.buttonDel.TabIndex = 2;
+            this.buttonDel.Text = "Удалить";
+            this.buttonDel.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
