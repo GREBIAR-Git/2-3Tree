@@ -1,0 +1,10 @@
+C:\Users\Nikita\Desktop\2-3Tree\2-3Tree\2-3Tree\bin\Debug\2-3Tree.exe.config
+C:\Users\Nikita\Desktop\2-3Tree\2-3Tree\2-3Tree\bin\Debug\2-3Tree.exe
+C:\Users\Nikita\Desktop\2-3Tree\2-3Tree\2-3Tree\bin\Debug\2-3Tree.pdb
+C:\Users\Nikita\Desktop\2-3Tree\2-3Tree\2-3Tree\obj\Debug\2-3Tree.csproj.AssemblyReference.cache
+C:\Users\Nikita\Desktop\2-3Tree\2-3Tree\2-3Tree\obj\Debug\_2_3Tree.Properties.Resources.resources
+C:\Users\Nikita\Desktop\2-3Tree\2-3Tree\2-3Tree\obj\Debug\2-3Tree.csproj.GenerateResource.cache
+C:\Users\Nikita\Desktop\2-3Tree\2-3Tree\2-3Tree\obj\Debug\2-3Tree.csproj.CoreCompileInputs.cache
+C:\Users\Nikita\Desktop\2-3Tree\2-3Tree\2-3Tree\obj\Debug\2-3Tree.exe
+C:\Users\Nikita\Desktop\2-3Tree\2-3Tree\2-3Tree\obj\Debug\2-3Tree.pdb
+C:\Users\Nikita\Desktop\2-3Tree\2-3Tree\2-3Tree\obj\Debug\_2_3Tree.MainForm.resources
