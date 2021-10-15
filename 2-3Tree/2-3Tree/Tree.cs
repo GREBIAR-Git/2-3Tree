@@ -35,7 +35,7 @@ namespace _2_3Tree
 
         Branch SearchInsertionPoint(Branch branch, Code code)
         {
-            if(branch.IsLeaf())
+            if(branch==null || branch.IsLeaf())
             {
                 return branch;
             }
@@ -66,6 +66,12 @@ namespace _2_3Tree
                 }
             }
             return null;
+        }
+
+        public void PrintRoot()
+        {
+            string i = root.LeftCode.str;
+            string g = root.RightCode.str;
         }
 
         public Tree()

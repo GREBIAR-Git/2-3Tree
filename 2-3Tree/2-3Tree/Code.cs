@@ -205,7 +205,7 @@ namespace _2_3Tree
             }
         }
 
-        public static bool operator ==(Code a, Code b)
+        /*public static bool operator ==(Code a, Code b)
         {
             if (a.digit)
             {
@@ -315,15 +315,20 @@ namespace _2_3Tree
                     }
                 }
             }
-        }
+        }*/
 
         public Code(string str)
         {
             this.str = str;
-            digit = Int32.TryParse(str, out code[0]);
-            if (!digit)
+            int code;
+            digit = Int32.TryParse(str, out code);
+            if (digit)
             {
-                code = str.ToCharArray().Select(x => (int)x).ToArray();
+                this.code = new int[] { code };
+            }
+            else
+            { 
+                this.code = str.ToCharArray().Select(x => (int)x).ToArray();
             }
         }
     }

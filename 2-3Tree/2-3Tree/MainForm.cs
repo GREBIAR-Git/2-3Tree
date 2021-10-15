@@ -12,9 +12,9 @@ namespace _2_3Tree
         {
             InitializeComponent();
             Tree tree = new Tree();
-            // tree.Insert(1);
-            // tree.Insert(2);
-            //tree.PrintRoot();
+            tree.Insert("фис");
+            tree.Insert("1");
+            tree.PrintRoot();
         }
 
         void textBoxAdd_KeyPress_OnlyDigit(object sender, KeyPressEventArgs e)

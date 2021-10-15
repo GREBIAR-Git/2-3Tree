@@ -20,7 +20,7 @@
 
         public bool NeighborEmpty()
         {
-            if (RightCode.str==null)
+            if (RightCode==null)
             {
                 return true;
             }
@@ -30,7 +30,6 @@
         public void SetNeighbor(string code)
         {
             Code newCode = new Code(code);
-
             if (LeftCode <= newCode)
             {
                 RightCode = newCode;
