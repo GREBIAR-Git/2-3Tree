@@ -12,9 +12,9 @@ namespace _2_3Tree
 
         public void Insert(int code)
         {
-            Branch currentBranch = root;
+            Branch currentBranch = SearchInsertionPoint(root, code);
 
-            if(currentBranch == null)
+            if (currentBranch == null)
             {
                 root = new Branch(code);
             }
@@ -40,31 +40,39 @@ namespace _2_3Tree
             }
         }
 
-        Branch SearchInsertionPoint(Branch branch,int code)
+        Branch SearchInsertionPoint(Branch branch, int code)
         {
             if(branch.IsLeaf())
             {
                 return branch;
             }
-            else if(code<branch.LeftCode && branch.ChildFirst.IsLeaf())
+            else if(branch.RightCode == 0)
             {
-
-            }
-            else if(branch.RightCode==0)
-            {
-                if (code >= branch.LeftCode && branch.ChildFirst.IsLeaf())
+                if(code < branch.LeftCode)
                 {
-
+                    SearchInsertionPoint(branch.ChildFirst, code);
+                }
+                else
+                {
+                    SearchInsertionPoint(branch.ChildSecond, code);
                 }
             }
-            else if (code < branch.LeftCode code < branch.LeftCode && branch.ChildFirst.IsLeaf())
+            else
             {
-
+                if (code < branch.LeftCode)
+                {
+                    SearchInsertionPoint(branch.ChildFirst, code);
+                }
+                else if (code > branch.LeftCode && code <= branch.RightCode)
+                {
+                    SearchInsertionPoint(branch.ChildSecond, code);
+                }
+                else
+                {
+                    SearchInsertionPoint(branch.ChildThird, code);
+                }
             }
-            else if (code < branch.LeftCode && branch.ChildFirst.IsLeaf())
-            {
-
-            }
+            return null;
         }
 
         public void PrintRoot()
