@@ -1,36 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace _2_3Tree
 {
     class Code
     {
-        string str;
-        int[] code;
+        public string str { get; set; }
+        public int[] code { get; set; }
         bool digit;
         public Code(string str)
         {
             this.str = str;
-            digit = Int32.TryParse(str, out code);
-            if (digit)
+            digit = Int32.TryParse(str, out code[0]);
+            if (!digit)
             {
-            }
-            else
-            { 
-                foreach(char ch in str)
-                {
-                    code[]
-                }
-                
+                code = str.ToCharArray().Select(x => (int)x).ToArray();
             }
         }
     }
 }
-
-//a aa b 7 15 3
-
-//  a b aa
-// 49 49  49 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace _2_3Tree
@@ -10,9 +12,9 @@ namespace _2_3Tree
         {
             InitializeComponent();
             Tree tree = new Tree();
-            tree.Insert(1);
-            tree.Insert(2);
-            tree.PrintRoot();
+            // tree.Insert(1);
+            // tree.Insert(2);
+            //tree.PrintRoot();
         }
 
         void textBoxAdd_KeyPress_OnlyDigit(object sender, KeyPressEventArgs e)

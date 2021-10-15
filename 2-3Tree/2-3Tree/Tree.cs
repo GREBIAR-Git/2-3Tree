@@ -20,7 +20,7 @@ namespace _2_3Tree
             }
             else if (currentBranch.IsLeaf() && currentBranch.NeighborEmpty())
             {
-                if (currentBranch.LeftCode <= code)
+                if (currentBranch.LeftCode. <= code)
                 {
                     currentBranch.RightCode = code;
                 }
@@ -46,9 +46,9 @@ namespace _2_3Tree
             {
                 return branch;
             }
-            else if(branch.RightCode == 0)
+            else if(branch.RightCode.str == null)
             {
-                if(code < branch.LeftCode)
+                if(code < branch.LeftCode.code)
                 {
                     SearchInsertionPoint(branch.ChildFirst, code);
                 }

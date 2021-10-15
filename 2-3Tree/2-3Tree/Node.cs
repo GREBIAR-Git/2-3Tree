@@ -2,9 +2,8 @@
 {
     class Branch
     {
-        public string sCode { get; set; }
-        public int LeftCode { get; set; }
-        public int RightCode { get; set; }
+        public Code LeftCode { get; set; }
+        public Code RightCode { get; set; }
         public Branch ChildFirst { get; set; }
         public Branch ChildSecond { get; set; }
         public Branch ChildThird { get; set; }
@@ -21,23 +20,35 @@
 
         public bool NeighborEmpty()
         {
-            if (RightCode==0)
+            if (RightCode.str==null)
             {
                 return true;
             }
             return false;
         }
 
-        public Branch()
+        public void SetNeighbor(string code)
         {
-            int NullInt = 0;
-            LeftCode = NullInt;
-            RightCode = NullInt;
+            if (LeftCode.code <= code)
+            {
+                RightCode = code;
+            }
+            else
+            {
+                RightCode = LeftCode;
+                LeftCode = code;
+            }
         }
 
-        public Branch(int code)
+        public Branch()
         {
-            this.LeftCode = code;
+            LeftCode.str = null;
+            RightCode.str = null;
+        }
+
+        public Branch(string code)
+        {
+            this.LeftCode = new Code(code);
         }
     }
 }
