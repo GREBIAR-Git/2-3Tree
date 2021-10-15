@@ -10,9 +10,10 @@ namespace _2_3Tree
     {
         Branch root;
 
-        public void Insert(int code)
+        public void Insert(string code)
         {
-            Branch currentBranch = SearchInsertionPoint(root, code);
+            Code newCode = new Code(code);
+            Branch currentBranch = SearchInsertionPoint(root, newCode);
 
             if (currentBranch == null)
             {
@@ -20,15 +21,7 @@ namespace _2_3Tree
             }
             else if (currentBranch.IsLeaf() && currentBranch.NeighborEmpty())
             {
-                if (currentBranch.LeftCode. <= code)
-                {
-                    currentBranch.RightCode = code;
-                }
-                else
-                {
-                    currentBranch.RightCode = currentBranch.LeftCode;
-                    currentBranch.LeftCode = code;
-                }    
+                currentBranch.SetNeighbor(newCode);
             }
             else if (false)
             {
@@ -40,7 +33,7 @@ namespace _2_3Tree
             }
         }
 
-        Branch SearchInsertionPoint(Branch branch, int code)
+        Branch SearchInsertionPoint(Branch branch, Code code)
         {
             if(branch.IsLeaf())
             {
@@ -48,7 +41,7 @@ namespace _2_3Tree
             }
             else if(branch.RightCode.str == null)
             {
-                if(code < branch.LeftCode.code)
+                if(code < branch.LeftCode)
                 {
                     SearchInsertionPoint(branch.ChildFirst, code);
                 }
@@ -74,14 +67,6 @@ namespace _2_3Tree
             }
             return null;
         }
-
-        public void PrintRoot()
-        {
-            int i = root.RightCode;
-            int f = root.LeftCode;
-            int jfg = 93;
-        }
-
 
         public Tree()
         {

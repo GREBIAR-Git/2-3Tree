@@ -19,8 +19,7 @@ namespace _2_3Tree
 
         void textBoxAdd_KeyPress_OnlyDigit(object sender, KeyPressEventArgs e)
         {
-
-            if(Control.ModifierKeys != Keys.Control)
+            /*if(Control.ModifierKeys != Keys.Control)
             {
                 if (!(Char.IsDigit(e.KeyChar)))
                 {
@@ -29,7 +28,7 @@ namespace _2_3Tree
                         e.Handled = true;
                     }
                 }
-            }
+            }*/
         }
     }
 }

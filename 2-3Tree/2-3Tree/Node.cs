@@ -29,7 +29,22 @@
 
         public void SetNeighbor(string code)
         {
-            if (LeftCode.code <= code)
+            Code newCode = new Code(code);
+
+            if (LeftCode <= newCode)
+            {
+                RightCode = newCode;
+            }
+            else
+            {
+                RightCode = LeftCode;
+                LeftCode = newCode;
+            }
+        }
+
+        public void SetNeighbor(Code code)
+        {
+            if (LeftCode <= code)
             {
                 RightCode = code;
             }
@@ -45,7 +60,6 @@
             LeftCode.str = null;
             RightCode.str = null;
         }
-
         public Branch(string code)
         {
             this.LeftCode = new Code(code);
