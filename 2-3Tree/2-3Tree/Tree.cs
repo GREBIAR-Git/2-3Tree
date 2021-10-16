@@ -8,7 +8,7 @@ namespace _2_3Tree
 {
     class Tree
     {
-        Branch root;
+        public Branch root { get; set; }
 
         public void Insert(string code)
         {
@@ -19,17 +19,14 @@ namespace _2_3Tree
             {
                 root = new Branch(code);
             }
-            else if (currentBranch.IsLeaf() && currentBranch.NeighborEmpty())
+            else if (currentBranch.NeighborEmpty())
             {
                 currentBranch.SetNeighbor(newCode);
             }
-            else if (false)
+            else
             {
-
-            }
-            else if(false)
-            {
-
+                currentBranch.SetCenter(newCode);
+                root = currentBranch.SplitBranch(root);
             }
         }
 
