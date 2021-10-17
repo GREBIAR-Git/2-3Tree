@@ -3,7 +3,6 @@
     class Branch
     {
         public Code LeftCode { get; set; }
-
         public Code CenterCode { get; set; }
         public Code RightCode { get; set; }
 
@@ -12,7 +11,6 @@
         public Branch ChildThird { get; set; }
         public Branch ChildExtra { get; set; }
         public Branch Parent { get; set; }
-
         public bool IsLeaf()
         {
             if(ChildFirst==null&& ChildSecond==null&& ChildThird==null)
@@ -21,7 +19,6 @@
             }
             return false;
         }
-
         public bool NeighborEmpty()
         {
             if (RightCode==null)
@@ -30,7 +27,6 @@
             }
             return false;
         }
-
         public void SetNeighbor(Code code)
         {
             if (LeftCode <= code)
@@ -43,7 +39,6 @@
                 LeftCode = code;
             }
         }
-
         public void SetCenter(Code code)
         {
             if (LeftCode >= code)
@@ -61,7 +56,6 @@
                 RightCode = code;
             }
         }
-
         void AddChild(Branch branch)
         {
             if (ChildFirst != branch && ChildSecond != branch && ChildThird != branch)
@@ -145,15 +139,12 @@
                         SetParent(ChildExtra);
                     }
                 }
-
             }
         }
-
         void SetParent(Branch branch)
         {
             branch.Parent = this;
         }
-
         public Branch SplitBranch(Branch root)
         {
             if (Parent == null)
@@ -217,7 +208,6 @@
         {
             this.LeftCode = new Code(code);
         }
-
         public Branch(Code code)
         {
             this.LeftCode = code;

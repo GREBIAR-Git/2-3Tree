@@ -3,7 +3,6 @@
     class Tree
     {
         public Branch root { get; set; }
-
         public void Insert(string code)
         {
             Code newCode = new Code(code);
@@ -22,7 +21,6 @@
                 root = currentBranch.SplitBranch(root);
             }
         }
-
         Branch SearchInsertionPoint(Branch branch, Code code)
         {
             if(branch==null || branch.IsLeaf())
@@ -57,11 +55,14 @@
             }
         }
 
+        public void Search(string strCode)
+        {
+            Code code = new Code(strCode);
+        }
         public void ShowTree(System.Windows.Forms.TreeNodeCollection node)
         {
             ShowBranch(node, root);
         }
-
         void ShowBranch(System.Windows.Forms.TreeNodeCollection node, Branch currentBranch)
         {
             System.Windows.Forms.TreeNode nodeInside;

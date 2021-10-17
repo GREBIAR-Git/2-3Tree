@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace _2_3Tree
@@ -34,6 +33,7 @@ namespace _2_3Tree
             {
                 tree.ShowTree(treeBox.Nodes);
             }
+            treeBox.ExpandAll();
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
