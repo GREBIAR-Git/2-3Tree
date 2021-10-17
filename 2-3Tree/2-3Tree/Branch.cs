@@ -10,6 +10,7 @@
         public Branch ChildFirst { get; set; }
         public Branch ChildSecond { get; set; }
         public Branch ChildThird { get; set; }
+        public Branch ChildExtra { get; set; }
         public Branch Parent { get; set; }
 
         public bool IsLeaf()
@@ -28,12 +29,6 @@
                 return true;
             }
             return false;
-        }
-
-        public void SetNeighbor(string code)
-        {
-            Code newCode = new Code(code);
-            SetNeighbor(newCode);
         }
 
         public void SetNeighbor(Code code)
@@ -69,68 +64,148 @@
 
         public void AddChild(Branch branch)
         {
-            if (ChildFirst==null)
+            if (ChildFirst != branch && ChildSecond != branch && ChildThird != branch)
             {
-                ChildFirst = branch;
-            }
-            else if(ChildSecond == null)
-            {
-                if(ChildFirst.LeftCode< branch.LeftCode)
+                if (ChildFirst == null)
                 {
-                    ChildSecond = branch;
-                }
-                else
-                {
-                    ChildSecond = ChildFirst;
                     ChildFirst = branch;
+                    SetParent(ChildFirst);
                 }
+                else if (ChildSecond == null)
+                {
+                    if (ChildFirst.LeftCode < branch.LeftCode)
+                    {
+                        ChildSecond = branch;
+                        SetParent(ChildSecond);
+                    }
+                    else
+                    {
+                        ChildSecond = ChildFirst;
+                        SetParent(ChildSecond);
+                        ChildFirst = branch;
+                        SetParent(ChildFirst);
+                    }
+                }
+                else if (ChildThird == null)
+                {
+                    if (ChildFirst.LeftCode > branch.LeftCode)
+                    {
+                        ChildThird = ChildSecond;
+                        SetParent(ChildThird);
+                        ChildSecond = ChildFirst;
+                        SetParent(ChildSecond);
+                        ChildFirst = branch;
+                        SetParent(ChildFirst);
+                    }
+                    else if (ChildSecond.LeftCode > branch.LeftCode)
+                    {
+                        ChildThird = ChildSecond;
+                        SetParent(ChildThird);
+                        ChildSecond = branch;
+                        SetParent(ChildSecond);
+                    }
+                    else
+                    {
+                        ChildThird = branch;
+                        SetParent(ChildThird);
+                    }
+                }
+                else if (ChildExtra == null && CenterCode!=null)
+                {
+                    if (ChildFirst.LeftCode > branch.LeftCode)
+                    {
+                        ChildExtra = ChildThird;
+                        SetParent(ChildExtra);
+                        ChildThird = ChildSecond;
+                        SetParent(ChildThird);
+                        ChildSecond = ChildFirst;
+                        SetParent(ChildSecond);
+                        ChildFirst = branch;
+                        SetParent(ChildFirst);
+                    }
+                    else if (ChildSecond.LeftCode > branch.LeftCode)
+                    {
+                        ChildExtra = ChildThird;
+                        SetParent(ChildExtra);
+                        ChildThird = ChildSecond;
+                        SetParent(ChildThird);
+                        ChildSecond = branch;
+                        SetParent(ChildSecond);
+                    }
+                    else if (ChildThird.LeftCode > branch.LeftCode)
+                    {
+                        ChildExtra = ChildThird;
+                        SetParent(ChildExtra);
+                        ChildThird = branch;
+                        SetParent(ChildThird);
+                    }
+                    else
+                    {
+                        ChildExtra = branch;
+                        SetParent(ChildExtra);
+                    }
+                }
+
             }
-            else if (ChildThird == null)
-            {
-                if (ChildFirst.LeftCode > branch.LeftCode)
-                {
-                    ChildThird = ChildSecond;
-                    ChildSecond = ChildFirst;
-                    ChildFirst = branch;
-                }
-                else if (ChildSecond.LeftCode > branch.LeftCode)
-                {
-                    ChildThird = ChildSecond;
-                    ChildSecond = branch;
-                }
-                else
-                {
-                    ChildThird = branch;
-                }
-            }
+        }
+
+        public void SetParent(Branch branch)
+        {
+            branch.Parent = this;
         }
 
         public Branch SplitBranch(Branch root)
         {
-            if(Parent==null)
+            if (Parent == null)
             {
                 Parent = new Branch(CenterCode);
                 CenterCode = null;
                 Parent.AddChild(this);
-                Parent.AddChild(new Branch(RightCode));
+                Branch b1 = new Branch(RightCode);
+                Parent.AddChild(b1);
                 RightCode = null;
+                if(ChildExtra!=null)
+                {
+                    b1.AddChild(ChildThird);
+                    ChildThird = null;
+                    b1.AddChild(ChildExtra);
+                    ChildExtra = null;
+                }
                 return Parent;
             }
-            else if(Parent.NeighborEmpty())
+            else if (Parent.NeighborEmpty())
             {
                 Parent.SetNeighbor(CenterCode);
                 CenterCode = null;
                 Parent.AddChild(this);
-                Parent.AddChild(new Branch(RightCode));
+                Branch b1 = new Branch(RightCode);
+                Parent.AddChild(b1);
                 RightCode = null;
+                if (ChildExtra != null)
+                {
+                    b1.AddChild(ChildThird);
+                    ChildThird = null;
+                    b1.AddChild(ChildExtra);
+                    ChildExtra = null;
+                }
                 return root;
             }
             else
             {
                 Parent.SetCenter(CenterCode);
-                Parent.SplitBranch(root);
+                CenterCode = null;
+                Branch b1 = new Branch(RightCode);
+                Parent.AddChild(b1);
+                RightCode = null;
+                if (ChildExtra != null)
+                {
+                    b1.AddChild(ChildThird);
+                    ChildThird = null;
+                    b1.AddChild(ChildExtra);
+                    ChildExtra = null;
+                }
+                return Parent.SplitBranch(root);
             }
-            return root;
         }
 
         public Branch()

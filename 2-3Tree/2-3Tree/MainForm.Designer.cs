@@ -39,6 +39,7 @@ namespace _2_3Tree
             this.textBoxFind = new System.Windows.Forms.TextBox();
             this.buttonFind = new System.Windows.Forms.Button();
             this.buttonDel = new System.Windows.Forms.Button();
+            this.buttonClear = new System.Windows.Forms.Button();
             this.PanelMain.SuspendLayout();
             this.PanelMenuItem.SuspendLayout();
             this.SuspendLayout();
@@ -46,6 +47,7 @@ namespace _2_3Tree
             // treeBox
             // 
             this.treeBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeBox.HideSelection = false;
             this.treeBox.Location = new System.Drawing.Point(10, 10);
             this.treeBox.Margin = new System.Windows.Forms.Padding(10);
             this.treeBox.Name = "treeBox";
@@ -78,17 +80,17 @@ namespace _2_3Tree
             this.PanelMenuItem.Controls.Add(this.textBoxFind, 0, 2);
             this.PanelMenuItem.Controls.Add(this.buttonFind, 1, 2);
             this.PanelMenuItem.Controls.Add(this.buttonDel, 1, 1);
+            this.PanelMenuItem.Controls.Add(this.buttonClear, 0, 3);
             this.PanelMenuItem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PanelMenuItem.Location = new System.Drawing.Point(572, 10);
             this.PanelMenuItem.Margin = new System.Windows.Forms.Padding(10);
             this.PanelMenuItem.Name = "PanelMenuItem";
-            this.PanelMenuItem.RowCount = 4;
+            this.PanelMenuItem.RowCount = 5;
+            this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.PanelMenuItem.Size = new System.Drawing.Size(280, 430);
             this.PanelMenuItem.TabIndex = 1;
             // 
@@ -98,7 +100,7 @@ namespace _2_3Tree
             this.buttonAdd.Location = new System.Drawing.Point(143, 3);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(134, 39);
-            this.buttonAdd.TabIndex = 0;
+            this.buttonAdd.TabIndex = 1;
             this.buttonAdd.Text = "Добавить";
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
@@ -110,8 +112,8 @@ namespace _2_3Tree
             this.textBoxAdd.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxAdd.Name = "textBoxAdd";
             this.textBoxAdd.Size = new System.Drawing.Size(140, 29);
-            this.textBoxAdd.TabIndex = 1;
-            this.textBoxAdd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxAdd_KeyPress_OnlyDigit);
+            this.textBoxAdd.TabIndex = 0;
+            this.textBoxAdd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxAdd_KeyDown);
             // 
             // textBoxDel
             // 
@@ -120,7 +122,7 @@ namespace _2_3Tree
             this.textBoxDel.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxDel.Name = "textBoxDel";
             this.textBoxDel.Size = new System.Drawing.Size(140, 29);
-            this.textBoxDel.TabIndex = 3;
+            this.textBoxDel.TabIndex = 2;
             // 
             // textBoxFind
             // 
@@ -129,7 +131,7 @@ namespace _2_3Tree
             this.textBoxFind.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxFind.Name = "textBoxFind";
             this.textBoxFind.Size = new System.Drawing.Size(140, 29);
-            this.textBoxFind.TabIndex = 5;
+            this.textBoxFind.TabIndex = 4;
             // 
             // buttonFind
             // 
@@ -137,7 +139,7 @@ namespace _2_3Tree
             this.buttonFind.Location = new System.Drawing.Point(143, 92);
             this.buttonFind.Name = "buttonFind";
             this.buttonFind.Size = new System.Drawing.Size(134, 36);
-            this.buttonFind.TabIndex = 4;
+            this.buttonFind.TabIndex = 5;
             this.buttonFind.Text = "Найти";
             this.buttonFind.UseVisualStyleBackColor = true;
             // 
@@ -147,9 +149,22 @@ namespace _2_3Tree
             this.buttonDel.Location = new System.Drawing.Point(143, 48);
             this.buttonDel.Name = "buttonDel";
             this.buttonDel.Size = new System.Drawing.Size(134, 38);
-            this.buttonDel.TabIndex = 2;
+            this.buttonDel.TabIndex = 3;
             this.buttonDel.Text = "Удалить";
             this.buttonDel.UseVisualStyleBackColor = true;
+            // 
+            // buttonClear
+            // 
+            this.buttonClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.PanelMenuItem.SetColumnSpan(this.buttonClear, 2);
+            this.buttonClear.Location = new System.Drawing.Point(0, 134);
+            this.buttonClear.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.buttonClear.Name = "buttonClear";
+            this.buttonClear.Size = new System.Drawing.Size(277, 45);
+            this.buttonClear.TabIndex = 7;
+            this.buttonClear.Text = "Очистить";
+            this.buttonClear.UseVisualStyleBackColor = true;
+            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
             // 
             // MainForm
             // 
@@ -158,7 +173,7 @@ namespace _2_3Tree
             this.ClientSize = new System.Drawing.Size(862, 450);
             this.Controls.Add(this.PanelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(550, 195);
+            this.MinimumSize = new System.Drawing.Size(550, 240);
             this.Name = "MainForm";
             this.Text = "2-3Tree";
             this.PanelMain.ResumeLayout(false);
@@ -179,6 +194,7 @@ namespace _2_3Tree
         private System.Windows.Forms.Button buttonDel;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.TextBox textBoxAdd;
+        private System.Windows.Forms.Button buttonClear;
     }
 }
 

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace _2_3Tree
@@ -13,58 +11,135 @@ namespace _2_3Tree
         {
             InitializeComponent();
             tree = new Tree();
+            tree.Insert("10");
+            tree.Insert("100");
+            tree.Insert("150");
+            tree.Insert("40");
+            tree.Insert("30");
+            tree.Insert("36");
+            tree.Insert("20");
             tree.Insert("1");
-            tree.Insert("2");
-            tree.Insert("3");
-            //tree.PrintRoot();
+            tree.Insert("13");
+            tree.Insert("11");
+            tree.Insert("119");
+            tree.Insert("90");
+            tree.Insert("300");
             TreeUpdate();
         }
 
         public void TreeUpdate()
         {
             treeBox.Nodes.Clear();
-            Branch currentBranch = tree.root;
-            Queue<Branch> queue = new Queue<Branch>();
-            Queue<Branch> queue = new Queue<Branch>();//Куда
-            queue.Enqueue(currentBranch);
-            if (currentBranch != null)
+            if(tree.root!=null)
             {
-                while (queue.Count != 0)
+                Branch currentBranch = tree.root;
+                Queue<Branch> queue = new Queue<Branch>();
+                queue.Enqueue(currentBranch);
+                Code code = currentBranch.LeftCode;
+                TreeNodeCollection node = treeBox.Nodes;
+
+                if (currentBranch != null)
                 {
-                    currentBranch = queue.Dequeue();
-                    if (currentBranch.ChildFirst != null) queue.Enqueue(currentBranch.ChildFirst);
-                    if (currentBranch.ChildSecond != null) queue.Enqueue(currentBranch.ChildSecond);
-                    if (currentBranch.ChildThird != null) queue.Enqueue(currentBranch.ChildSecond);
-                    if (tree.root.RightCode != null)
+                    while (queue.Count != 0)
                     {
-                        treeBox.Nodes.Add(currentBranch.LeftCode.str + ":" + currentBranch.RightCode.str);
-                    }
-                    else
-                    {
-                        treeBox.Nodes.Add(currentBranch.LeftCode.str);
+                        currentBranch = queue.Dequeue();
+                        if (code > currentBranch.LeftCode)
+                        {
+                            node = node[0].Nodes;
+                        }
+                        code = currentBranch.LeftCode;
+                        if (currentBranch.ChildFirst != null)
+                        {
+                            queue.Enqueue(currentBranch.ChildFirst);
+                        }
+                        if (currentBranch.ChildSecond != null)
+                        {
+                            queue.Enqueue(currentBranch.ChildSecond);
+                        }
+                        if (currentBranch.ChildThird != null)
+                        {
+                            queue.Enqueue(currentBranch.ChildThird);
+                        }
+                        if (currentBranch.RightCode != null)
+                        {
+                            node.Add(currentBranch.LeftCode.str + "|" + currentBranch.RightCode.str);
+                        }
+                        else
+                        {
+                            node.Add(currentBranch.LeftCode.str);
+                        }
                     }
                 }
             }
         }
 
-        void textBoxAdd_KeyPress_OnlyDigit(object sender, KeyPressEventArgs e)
-        {
-            /*if(Control.ModifierKeys != Keys.Control)
-            {
-                if (!(Char.IsDigit(e.KeyChar)))
-                {
-                    if (e.KeyChar != (char)Keys.Back)
-                    {
-                        e.Handled = true;
-                    }
-                }
-            }*/
-        }
-
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            tree.Insert(textBoxAdd.Text);
+            if(textBoxAdd.Text!="")
+            {
+                tree.Insert(textBoxAdd.Text);
+                TreeUpdate();
+            }
+        }
+
+        private void buttonClear_Click(object sender, EventArgs e)
+        {
+            tree = new Tree();
             TreeUpdate();
         }
+
+        private void textBoxAdd_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                buttonAdd_Click(sender, e);
+                e.SuppressKeyPress = true;
+            }
+        }
+        /*
+         public void TreeUpdate()
+        {
+            treeBox.Nodes.Clear();
+            if(tree.root!=null)
+            {
+                Branch currentBranch = tree.root;
+                Queue<Branch> queue = new Queue<Branch>();
+                queue.Enqueue(currentBranch);
+                Code code = currentBranch.LeftCode;
+                TreeNodeCollection node = treeBox.Nodes;
+                if (currentBranch != null)
+                {
+                    while (queue.Count != 0)
+                    {
+                        currentBranch = queue.Dequeue();
+                        if (code > currentBranch.LeftCode)
+                        {
+                            node = node[0].Nodes;
+                        }
+                        code = currentBranch.LeftCode;
+                        if (currentBranch.ChildFirst != null)
+                        {
+                            queue.Enqueue(currentBranch.ChildFirst);
+                        }
+                        if (currentBranch.ChildSecond != null)
+                        {
+                            queue.Enqueue(currentBranch.ChildSecond);
+                        }
+                        if (currentBranch.ChildThird != null)
+                        {
+                            queue.Enqueue(currentBranch.ChildThird);
+                        }
+                        if (currentBranch.RightCode != null)
+                        {
+                            node.Add(currentBranch.LeftCode.str + "|" + currentBranch.RightCode.str);
+                        }
+                        else
+                        {
+                            node.Add(currentBranch.LeftCode.str);
+                        }
+                    }
+                }
+            }
+        }*/
     }
 }

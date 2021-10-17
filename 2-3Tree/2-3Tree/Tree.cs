@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace _2_3Tree
+﻿namespace _2_3Tree
 {
     class Tree
     {
@@ -36,41 +30,33 @@ namespace _2_3Tree
             {
                 return branch;
             }
-            else if(branch.RightCode.str == null)
+            else if(branch.NeighborEmpty())
             {
                 if(code < branch.LeftCode)
                 {
-                    SearchInsertionPoint(branch.ChildFirst, code);
+                    return SearchInsertionPoint(branch.ChildFirst, code);
                 }
                 else
                 {
-                    SearchInsertionPoint(branch.ChildSecond, code);
+                    return SearchInsertionPoint(branch.ChildSecond, code);
                 }
             }
             else
             {
                 if (code < branch.LeftCode)
                 {
-                    SearchInsertionPoint(branch.ChildFirst, code);
+                    return SearchInsertionPoint(branch.ChildFirst, code);
                 }
-                else if (code > branch.LeftCode && code <= branch.RightCode)
+                else if (code >= branch.LeftCode && code < branch.RightCode)
                 {
-                    SearchInsertionPoint(branch.ChildSecond, code);
+                    return SearchInsertionPoint(branch.ChildSecond, code);
                 }
                 else
                 {
-                    SearchInsertionPoint(branch.ChildThird, code);
+                    return SearchInsertionPoint(branch.ChildThird, code);
                 }
             }
-            return null;
         }
-
-        public void PrintRoot()
-        {
-            string i = root.LeftCode.str;
-            string g = root.RightCode.str;
-        }
-
         public Tree()
         {
             root = null;
