@@ -32,44 +32,7 @@ namespace _2_3Tree
             treeBox.Nodes.Clear();
             if(tree.root!=null)
             {
-                Branch currentBranch = tree.root;
-                Queue<Branch> queue = new Queue<Branch>();
-                queue.Enqueue(currentBranch);
-                Code code = currentBranch.LeftCode;
-                TreeNodeCollection node = treeBox.Nodes;
-
-                if (currentBranch != null)
-                {
-                    while (queue.Count != 0)
-                    {
-                        currentBranch = queue.Dequeue();
-                        if (code > currentBranch.LeftCode)
-                        {
-                            node = node[0].Nodes;
-                        }
-                        code = currentBranch.LeftCode;
-                        if (currentBranch.ChildFirst != null)
-                        {
-                            queue.Enqueue(currentBranch.ChildFirst);
-                        }
-                        if (currentBranch.ChildSecond != null)
-                        {
-                            queue.Enqueue(currentBranch.ChildSecond);
-                        }
-                        if (currentBranch.ChildThird != null)
-                        {
-                            queue.Enqueue(currentBranch.ChildThird);
-                        }
-                        if (currentBranch.RightCode != null)
-                        {
-                            node.Add(currentBranch.LeftCode.str + "|" + currentBranch.RightCode.str);
-                        }
-                        else
-                        {
-                            node.Add(currentBranch.LeftCode.str);
-                        }
-                    }
-                }
+                tree.ShowTree(treeBox.Nodes);
             }
         }
 
@@ -96,50 +59,5 @@ namespace _2_3Tree
                 e.SuppressKeyPress = true;
             }
         }
-        /*
-         public void TreeUpdate()
-        {
-            treeBox.Nodes.Clear();
-            if(tree.root!=null)
-            {
-                Branch currentBranch = tree.root;
-                Queue<Branch> queue = new Queue<Branch>();
-                queue.Enqueue(currentBranch);
-                Code code = currentBranch.LeftCode;
-                TreeNodeCollection node = treeBox.Nodes;
-                if (currentBranch != null)
-                {
-                    while (queue.Count != 0)
-                    {
-                        currentBranch = queue.Dequeue();
-                        if (code > currentBranch.LeftCode)
-                        {
-                            node = node[0].Nodes;
-                        }
-                        code = currentBranch.LeftCode;
-                        if (currentBranch.ChildFirst != null)
-                        {
-                            queue.Enqueue(currentBranch.ChildFirst);
-                        }
-                        if (currentBranch.ChildSecond != null)
-                        {
-                            queue.Enqueue(currentBranch.ChildSecond);
-                        }
-                        if (currentBranch.ChildThird != null)
-                        {
-                            queue.Enqueue(currentBranch.ChildThird);
-                        }
-                        if (currentBranch.RightCode != null)
-                        {
-                            node.Add(currentBranch.LeftCode.str + "|" + currentBranch.RightCode.str);
-                        }
-                        else
-                        {
-                            node.Add(currentBranch.LeftCode.str);
-                        }
-                    }
-                }
-            }
-        }*/
     }
 }

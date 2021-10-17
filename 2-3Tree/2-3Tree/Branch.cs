@@ -62,7 +62,7 @@
             }
         }
 
-        public void AddChild(Branch branch)
+        void AddChild(Branch branch)
         {
             if (ChildFirst != branch && ChildSecond != branch && ChildThird != branch)
             {
@@ -149,7 +149,7 @@
             }
         }
 
-        public void SetParent(Branch branch)
+        void SetParent(Branch branch)
         {
             branch.Parent = this;
         }

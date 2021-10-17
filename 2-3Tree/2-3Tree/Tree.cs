@@ -8,7 +8,6 @@
         {
             Code newCode = new Code(code);
             Branch currentBranch = SearchInsertionPoint(root, newCode);
-
             if (currentBranch == null)
             {
                 root = new Branch(code);
@@ -55,6 +54,36 @@
                 {
                     return SearchInsertionPoint(branch.ChildThird, code);
                 }
+            }
+        }
+
+        public void ShowTree(System.Windows.Forms.TreeNodeCollection node)
+        {
+            ShowBranch(node, root);
+        }
+
+        void ShowBranch(System.Windows.Forms.TreeNodeCollection node, Branch currentBranch)
+        {
+            System.Windows.Forms.TreeNode nodeInside;
+            if (currentBranch.RightCode != null)
+            {
+                nodeInside = node.Add(currentBranch.LeftCode.str + "|" + currentBranch.RightCode.str);
+            }
+            else
+            {
+                nodeInside = node.Add(currentBranch.LeftCode.str);
+            }
+            if (currentBranch.ChildFirst != null)
+            {
+                ShowBranch(nodeInside.Nodes, currentBranch.ChildFirst);
+            }
+            if (currentBranch.ChildSecond != null)
+            {
+                ShowBranch(nodeInside.Nodes, currentBranch.ChildSecond);
+            }
+            if (currentBranch.ChildThird != null)
+            {
+                ShowBranch(nodeInside.Nodes, currentBranch.ChildThird);
             }
         }
         public Tree()
