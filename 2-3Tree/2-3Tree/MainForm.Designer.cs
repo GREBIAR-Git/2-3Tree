@@ -130,6 +130,7 @@ namespace _2_3Tree
             this.textBoxSearch.Size = new System.Drawing.Size(280, 29);
             this.textBoxSearch.TabIndex = 0;
             this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
+            this.textBoxSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxSearch_KeyDown);
             // 
             // buttonAdd
             // 
@@ -152,6 +153,7 @@ namespace _2_3Tree
             this.buttonDel.TabIndex = 4;
             this.buttonDel.Text = "Удалить";
             this.buttonDel.UseVisualStyleBackColor = true;
+            this.buttonDel.Click += new System.EventHandler(this.buttonDel_Click);
             // 
             // textBoxDel
             // 
@@ -161,6 +163,7 @@ namespace _2_3Tree
             this.textBoxDel.Name = "textBoxDel";
             this.textBoxDel.Size = new System.Drawing.Size(140, 29);
             this.textBoxDel.TabIndex = 3;
+            this.textBoxDel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxDel_KeyDown);
             // 
             // textBoxAdd
             // 

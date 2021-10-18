@@ -56,12 +56,14 @@ namespace _2_3Tree
                 }
             }
         }
+        public void Delete(string code)
+        {
 
+        }
         public Branch Search(string strCode)
         {
             return Search(new Code(strCode),root);
         }
-
         public Branch Search(Code code, Branch currentBranch)
         {
             if (currentBranch != null)
@@ -138,7 +140,6 @@ namespace _2_3Tree
                 nodeInside = node.Add(currentBranch.LeftCode.str);
             }
         }
-
         void TransitionToChild(Branch childBranch, TreeNode nodeInside)
         {
             if (childBranch != null)

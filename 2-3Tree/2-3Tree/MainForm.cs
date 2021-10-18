@@ -33,11 +33,6 @@ namespace _2_3Tree
                 TreeDrawingWithFoundBranch();
             }
         }
-        void buttonClear_Click(object sender, EventArgs e)
-        {
-            tree = new Tree();
-            TreeDrawing();
-        }
         void textBoxAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -46,9 +41,37 @@ namespace _2_3Tree
                 e.SuppressKeyPress = true;
             }
         }
+        private void buttonDel_Click(object sender, EventArgs e)
+        {
+            if (textBoxDel.Text != "")
+            {
+                tree.Delete(textBoxDel.Text);
+                TreeDrawingWithFoundBranch();
+            }
+        }
+        private void textBoxDel_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                buttonDel_Click(sender, e);
+                e.SuppressKeyPress = true;
+            }
+        }
         void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
             TreeDrawingWithFoundBranch();
+        }
+        private void textBoxSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+            }
+        }
+        void buttonClear_Click(object sender, EventArgs e)
+        {
+            tree = new Tree();
+            TreeDrawing();
         }
     }
 }
