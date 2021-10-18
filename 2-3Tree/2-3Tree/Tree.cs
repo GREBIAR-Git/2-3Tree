@@ -1,4 +1,6 @@
-﻿namespace _2_3Tree
+﻿using System.Windows.Forms;
+
+namespace _2_3Tree
 {
     class Tree
     {
@@ -55,17 +57,78 @@
             }
         }
 
-        public void Search(string strCode)
+        public Branch Search(string strCode)
         {
-            Code code = new Code(strCode);
+            return Search(new Code(strCode),root);
         }
-        public void ShowTree(System.Windows.Forms.TreeNodeCollection node)
+
+        public Branch Search(Code code, Branch currentBranch)
+        {
+            if (currentBranch != null)
+            {
+                if (currentBranch.LeftCode==code  ||(currentBranch.RightCode!=null && currentBranch.RightCode==code))
+                {
+                    return currentBranch;
+                }
+                else if (currentBranch.NeighborEmpty())
+                {
+                    if (code < currentBranch.LeftCode)
+                    {
+                        return Search(code, currentBranch.ChildFirst);
+                    }
+                    else
+                    {
+                        return Search(code, currentBranch.ChildSecond);
+                    }
+                }
+                else
+                {
+                    if (code < currentBranch.LeftCode)
+                    {
+                        return Search(code, currentBranch.ChildFirst);
+                    }
+                    else if (code >= currentBranch.LeftCode && code < currentBranch.RightCode)
+                    {
+                        return Search(code, currentBranch.ChildSecond);
+                    }
+                    else
+                    {
+                        return Search(code, currentBranch.ChildThird);
+                    }
+                }
+            }
+            return null;
+        }
+        public void ShowTreeWithFoundBranch(TreeNodeCollection node, Branch foundBranch)
+        {
+            ShowBranch(node, root, foundBranch);
+        }
+        public void ShowTree(TreeNodeCollection node)
         {
             ShowBranch(node, root);
         }
-        void ShowBranch(System.Windows.Forms.TreeNodeCollection node, Branch currentBranch)
+        void ShowBranch(TreeNodeCollection node, Branch currentBranch)
         {
-            System.Windows.Forms.TreeNode nodeInside;
+            TreeNode nodeInside;
+            AddNodeToTreeView(currentBranch, out nodeInside, node);
+            TransitionToChild(currentBranch.ChildFirst, nodeInside);
+            TransitionToChild(currentBranch.ChildSecond, nodeInside);
+            TransitionToChild(currentBranch.ChildThird, nodeInside);
+        }
+        void ShowBranch(TreeNodeCollection node, Branch currentBranch, Branch foundBranch)
+        {
+            TreeNode nodeInside;
+            AddNodeToTreeView(currentBranch, out nodeInside, node);
+            if (foundBranch == currentBranch)
+            {
+                nodeInside.BackColor = System.Drawing.Color.Red;
+            }
+            TransitionToChild(currentBranch.ChildFirst, nodeInside, foundBranch);
+            TransitionToChild(currentBranch.ChildSecond, nodeInside, foundBranch);
+            TransitionToChild(currentBranch.ChildThird, nodeInside, foundBranch);
+        }
+        void AddNodeToTreeView(Branch currentBranch, out TreeNode nodeInside, TreeNodeCollection node)
+        {
             if (currentBranch.RightCode != null)
             {
                 nodeInside = node.Add(currentBranch.LeftCode.str + "|" + currentBranch.RightCode.str);
@@ -74,19 +137,23 @@
             {
                 nodeInside = node.Add(currentBranch.LeftCode.str);
             }
-            if (currentBranch.ChildFirst != null)
+        }
+
+        void TransitionToChild(Branch childBranch, TreeNode nodeInside)
+        {
+            if (childBranch != null)
             {
-                ShowBranch(nodeInside.Nodes, currentBranch.ChildFirst);
-            }
-            if (currentBranch.ChildSecond != null)
-            {
-                ShowBranch(nodeInside.Nodes, currentBranch.ChildSecond);
-            }
-            if (currentBranch.ChildThird != null)
-            {
-                ShowBranch(nodeInside.Nodes, currentBranch.ChildThird);
+                ShowBranch(nodeInside.Nodes, childBranch);
             }
         }
+        void TransitionToChild(Branch childBranch, TreeNode nodeInside, Branch foundBranch)
+        {
+            if (childBranch != null)
+            {
+                ShowBranch(nodeInside.Nodes, childBranch, foundBranch);
+            }
+        }
+
         public Tree()
         {
             root = null;

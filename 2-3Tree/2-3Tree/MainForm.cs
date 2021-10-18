@@ -23,41 +23,32 @@ namespace _2_3Tree
             tree.Insert("119");
             tree.Insert("90");
             tree.Insert("300");
-            TreeUpdate();
+            TreeDrawingWithFoundBranch();
         }
-
-        public void TreeUpdate()
-        {
-            treeBox.Nodes.Clear();
-            if(tree.root!=null)
-            {
-                tree.ShowTree(treeBox.Nodes);
-            }
-            treeBox.ExpandAll();
-        }
-
-        private void buttonAdd_Click(object sender, EventArgs e)
+        void buttonAdd_Click(object sender, EventArgs e)
         {
             if(textBoxAdd.Text!="")
             {
                 tree.Insert(textBoxAdd.Text);
-                TreeUpdate();
+                TreeDrawingWithFoundBranch();
             }
         }
-
-        private void buttonClear_Click(object sender, EventArgs e)
+        void buttonClear_Click(object sender, EventArgs e)
         {
             tree = new Tree();
-            TreeUpdate();
+            TreeDrawing();
         }
-
-        private void textBoxAdd_KeyDown(object sender, KeyEventArgs e)
+        void textBoxAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 buttonAdd_Click(sender, e);
                 e.SuppressKeyPress = true;
             }
+        }
+        void textBoxSearch_TextChanged(object sender, EventArgs e)
+        {
+            TreeDrawingWithFoundBranch();
         }
     }
 }
