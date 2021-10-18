@@ -23,6 +23,8 @@ namespace _2_3Tree
             tree.Insert("119");
             tree.Insert("90");
             tree.Insert("300");
+            tree.Insert("ааа");
+            tree.Insert("aa");
             TreeDrawingWithFoundBranch();
         }
         void buttonAdd_Click(object sender, EventArgs e)
@@ -41,7 +43,7 @@ namespace _2_3Tree
                 e.SuppressKeyPress = true;
             }
         }
-        private void buttonDel_Click(object sender, EventArgs e)
+        void buttonDel_Click(object sender, EventArgs e)
         {
             if (textBoxDel.Text != "")
             {
@@ -49,7 +51,7 @@ namespace _2_3Tree
                 TreeDrawingWithFoundBranch();
             }
         }
-        private void textBoxDel_KeyDown(object sender, KeyEventArgs e)
+        void textBoxDel_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -61,7 +63,7 @@ namespace _2_3Tree
         {
             TreeDrawingWithFoundBranch();
         }
-        private void textBoxSearch_KeyDown(object sender, KeyEventArgs e)
+        void textBoxSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {

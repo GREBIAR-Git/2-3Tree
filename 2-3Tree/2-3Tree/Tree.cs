@@ -133,11 +133,11 @@ namespace _2_3Tree
         {
             if (currentBranch.RightCode != null)
             {
-                nodeInside = node.Add(currentBranch.LeftCode.str + "|" + currentBranch.RightCode.str);
+                nodeInside = node.Add("<"+currentBranch.LeftCode.str + "><" + currentBranch.RightCode.str+">");
             }
             else
             {
-                nodeInside = node.Add(currentBranch.LeftCode.str);
+                nodeInside = node.Add("<"+currentBranch.LeftCode.str+">");
             }
         }
         void TransitionToChild(Branch childBranch, TreeNode nodeInside)

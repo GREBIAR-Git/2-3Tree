@@ -50,9 +50,9 @@ namespace _2_3Tree
                     }
                     for(int i=0;i<length;i++)
                     {
-                        if(a.code[i]<=b.code[i])
+                        if(a.code[i]>b.code[i])
                         {
-                            return true;
+                            return false;
                         }
                     }
                     return true;
@@ -98,9 +98,9 @@ namespace _2_3Tree
                     }
                     for (int i = 0; i < length; i++)
                     {
-                        if (a.code[i] >= b.code[i])
+                        if (a.code[i] < b.code[i])
                         {
-                            return true;
+                            return false;
                         }
                     }
                     return true;
@@ -146,9 +146,9 @@ namespace _2_3Tree
                     }
                     for (int i = 0; i < length; i++)
                     {
-                        if (a.code[i] < b.code[i])
+                        if (a.code[i] >= b.code[i])
                         {
-                            return true;
+                            return false;
                         }
                     }
                     return true;
@@ -194,9 +194,9 @@ namespace _2_3Tree
                     }
                     for (int i = 0; i < length; i++)
                     {
-                        if (a.code[i] > b.code[i])
+                        if (a.code[i] <= b.code[i])
                         {
-                            return true;
+                            return false;
                         }
                     }
                     return true;
@@ -240,13 +240,13 @@ namespace _2_3Tree
                 else
                 {
                     int length;
-                    if (a.code.Length <= b.code.Length)
+                    if (a.code.Length != b.code.Length)
                     {
-                        length = a.code.Length;
+                        return false;
                     }
                     else
                     {
-                        length = b.code.Length;
+                        length = a.code.Length;
                     }
                     for (int i = 0; i < length; i++)
                     {
