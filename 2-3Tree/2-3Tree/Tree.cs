@@ -56,9 +56,13 @@ namespace _2_3Tree
                 }
             }
         }
-        public void Delete(string code)
+        public void Remove(string code)
         {
-
+            Branch removeBranch = Search(code);
+            if(removeBranch.IsLeaf()&&!removeBranch.NeighborEmpty())
+            {
+                removeBranch.RightCode = null;
+            }
         }
         public Branch Search(string strCode)
         {

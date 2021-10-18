@@ -48,11 +48,13 @@ namespace _2_3Tree
             // 
             this.treeBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeBox.HideSelection = false;
+            this.treeBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.treeBox.Location = new System.Drawing.Point(10, 10);
             this.treeBox.Margin = new System.Windows.Forms.Padding(10);
             this.treeBox.Name = "treeBox";
             this.treeBox.Size = new System.Drawing.Size(542, 430);
-            this.treeBox.TabIndex = 0;
+            this.treeBox.TabIndex = 100;
+            this.treeBox.TabStop = false;
             // 
             // PanelMain
             // 
@@ -163,6 +165,7 @@ namespace _2_3Tree
             this.textBoxDel.Name = "textBoxDel";
             this.textBoxDel.Size = new System.Drawing.Size(140, 29);
             this.textBoxDel.TabIndex = 3;
+            this.textBoxDel.TextChanged += new System.EventHandler(this.textBox_TextChanged);
             this.textBoxDel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxDel_KeyDown);
             // 
             // textBoxAdd
@@ -173,6 +176,7 @@ namespace _2_3Tree
             this.textBoxAdd.Name = "textBoxAdd";
             this.textBoxAdd.Size = new System.Drawing.Size(140, 29);
             this.textBoxAdd.TabIndex = 1;
+            this.textBoxAdd.TextChanged += new System.EventHandler(this.textBox_TextChanged);
             this.textBoxAdd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxAdd_KeyDown);
             // 
             // MainForm
@@ -202,8 +206,8 @@ namespace _2_3Tree
         private System.Windows.Forms.Button buttonDel;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.TextBox textBoxAdd;
-        private System.Windows.Forms.Button buttonClear;
         private System.Windows.Forms.Label labelSearch;
+        private System.Windows.Forms.Button buttonClear;
     }
 }
 

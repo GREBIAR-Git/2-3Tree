@@ -47,7 +47,7 @@ namespace _2_3Tree
         {
             if (textBoxDel.Text != "")
             {
-                tree.Delete(textBoxDel.Text);
+                tree.Remove(textBoxDel.Text);
                 TreeDrawingWithFoundBranch();
             }
         }
@@ -59,6 +59,10 @@ namespace _2_3Tree
                 e.SuppressKeyPress = true;
             }
         }
+        void textBox_TextChanged(object sender, EventArgs e)
+        {
+            RemoveSpecialSymbols(sender);
+        }
         void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
             TreeDrawingWithFoundBranch();
@@ -69,6 +73,14 @@ namespace _2_3Tree
             {
                 e.SuppressKeyPress = true;
             }
+        }
+        void RemoveSpecialSymbols(object sender)
+        {
+            TextBox textBox = (TextBox)sender;
+            int cursor = textBox.SelectionStart;
+            textBox.Text = textBox.Text.Replace("<", "");
+            textBox.Text = textBox.Text.Replace(">", "");
+            textBox.SelectionStart = cursor;
         }
         void buttonClear_Click(object sender, EventArgs e)
         {
