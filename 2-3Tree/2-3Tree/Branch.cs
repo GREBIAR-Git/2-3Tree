@@ -3,13 +3,13 @@
     class Branch
     {
         public Code LeftCode { get; set; }
-        public Code CenterCode { get; set; }
+        Code CenterCode { get; set; }
         public Code RightCode { get; set; }
 
         public Branch ChildFirst { get; set; }
         public Branch ChildSecond { get; set; }
         public Branch ChildThird { get; set; }
-        public Branch ChildExtra { get; set; }
+        Branch ChildExtra { get; set; }
         public Branch Parent { get; set; }
 
 

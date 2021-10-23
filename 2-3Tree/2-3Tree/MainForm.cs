@@ -10,28 +10,13 @@ namespace _2_3Tree
         {
             InitializeComponent();
             tree = new Tree();
-            tree.Insert("10");
-            tree.Insert("40");
-            tree.Insert("50");
-            tree.Insert("60");
-            tree.Insert("70");
-            tree.Insert("80");
-            tree.Insert("90");
-            tree.Insert("100");
-            tree.Insert("120");
-            tree.Insert("130");
-            tree.Insert("140");
-            tree.Insert("150");
-            tree.Insert("160");
-            tree.Remove("70");
-            tree.Insert("85");
-            tree.Remove("140");
-            tree.Remove("160");
-            tree.Remove("150");
-            tree.Remove("60");
-            tree.Remove("80");
-            tree.Remove("120");
+            RandomCode code = new RandomCode();
+            for(int i=0;i<100;i++)
+            {
+                tree.Insert(code.Random());
+            }
             TreeDrawingWithFoundBranch();
+            
         }
         void buttonAdd_Click(object sender, EventArgs e)
         {
