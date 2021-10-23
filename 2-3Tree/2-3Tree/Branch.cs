@@ -11,6 +11,8 @@
         public Branch ChildThird { get; set; }
         public Branch ChildExtra { get; set; }
         public Branch Parent { get; set; }
+
+
         public bool IsLeaf()
         {
             if(ChildFirst==null&& ChildSecond==null&& ChildThird==null)
@@ -56,7 +58,7 @@
                 RightCode = code;
             }
         }
-        void AddChild(Branch branch)
+        public void AddChild(Branch branch)
         {
             if (ChildFirst != branch && ChildSecond != branch && ChildThird != branch)
             {
@@ -139,6 +141,30 @@
                         SetParent(ChildExtra);
                     }
                 }
+            }
+        }
+
+        public int WhichChildren()
+        {
+            if(Parent==null)
+            {
+                return 0;
+            }
+            else if(Parent.ChildFirst == this)
+            {
+                return 1;
+            }
+            else if (Parent.ChildSecond == this)
+            {
+                return 2;
+            }
+            else if (Parent.ChildThird == this)
+            {
+                return 3;
+            }
+            else
+            {
+                return 0;
             }
         }
         void SetParent(Branch branch)
