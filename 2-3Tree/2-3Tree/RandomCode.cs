@@ -12,13 +12,13 @@ namespace _2_3Tree
         public string Random()
         {
             string code = string.Empty;
-            if(rnd.Next(10) < 9)
+            if(rnd.Next(12) < 11)
             {
-                code = rnd.Next(10000).ToString();
+                code = rnd.Next(1000).ToString();
             }
             else
             {
-                int length = rnd.Next(15);
+                int length = rnd.Next(1,12);
                 for (int i=0;i< length;i++)
                 {
                     code += Convert.ToChar(rnd.Next(97,123));

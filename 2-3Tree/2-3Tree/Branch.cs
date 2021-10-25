@@ -176,52 +176,37 @@
             if (Parent == null)
             {
                 Parent = new Branch(CenterCode);
-                CenterCode = null;
                 Parent.AddChild(this);
-                Branch b1 = new Branch(RightCode);
-                Parent.AddChild(b1);
-                RightCode = null;
-                if(ChildExtra!=null)
-                {
-                    b1.AddChild(ChildThird);
-                    ChildThird = null;
-                    b1.AddChild(ChildExtra);
-                    ChildExtra = null;
-                }
+                SplitMainPart();
                 return Parent;
             }
             else if (Parent.NeighborEmpty())
             {
                 Parent.SetNeighbor(CenterCode);
-                CenterCode = null;
                 Parent.AddChild(this);
-                Branch b1 = new Branch(RightCode);
-                Parent.AddChild(b1);
-                RightCode = null;
-                if (ChildExtra != null)
-                {
-                    b1.AddChild(ChildThird);
-                    ChildThird = null;
-                    b1.AddChild(ChildExtra);
-                    ChildExtra = null;
-                }
+                SplitMainPart();
                 return root;
             }
             else
             {
                 Parent.SetCenter(CenterCode);
-                CenterCode = null;
-                Branch b1 = new Branch(RightCode);
-                Parent.AddChild(b1);
-                RightCode = null;
-                if (ChildExtra != null)
-                {
-                    b1.AddChild(ChildThird);
-                    ChildThird = null;
-                    b1.AddChild(ChildExtra);
-                    ChildExtra = null;
-                }
+                SplitMainPart();
                 return Parent.SplitBranch(root);
+            }
+        }
+
+        void SplitMainPart()
+        {
+            CenterCode = null;
+            Branch b1 = new Branch(RightCode);
+            Parent.AddChild(b1);
+            RightCode = null;
+            if (ChildExtra != null)
+            {
+                b1.AddChild(ChildThird);
+                ChildThird = null;
+                b1.AddChild(ChildExtra);
+                ChildExtra = null;
             }
         }
 

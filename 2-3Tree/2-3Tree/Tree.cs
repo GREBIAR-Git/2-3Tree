@@ -61,155 +61,139 @@ namespace _2_3Tree
             Branch removeBranch = Search(code);
             if (removeBranch!=null)
             {
-                if(!removeBranch.IsLeaf())
-                {
-                    Branch min = null;
-                    if (removeBranch.LeftCode.str == code)
-                    {
-                        min = SearchMin(removeBranch.ChildSecond);
-                        removeBranch.LeftCode=min.LeftCode;
-                    }
-                    else if(removeBranch.RightCode.str == code)
-                    {
-                        min = SearchMin(removeBranch.ChildThird);
-                        removeBranch.RightCode = min.LeftCode;
-                    }
-                    Remake(min, min.LeftCode.str);
-                }
-                else
-                {
-                    Remake(removeBranch, code);
-                }
+                PreparingForDeletion(ref removeBranch, ref code);
+                FixingTreeAfterRemoval(removeBranch, code);
             }
         }
 
-        public void Remake(Branch currentBranch,string code)
+        void PreparingForDeletion(ref Branch removeBranch,ref string code)
         {
-            if(currentBranch!=null)
+            if (!removeBranch.IsLeaf())
             {
-                if(currentBranch==root&&currentBranch.IsLeaf()&&currentBranch.NeighborEmpty())
+                Branch min = null;
+                if (removeBranch.LeftCode.str == code)
                 {
-                    root = null;
+                    min = SearchMin(removeBranch.ChildSecond);
+                    removeBranch.LeftCode = min.LeftCode;
+                }
+                else
+                {
+                    min = SearchMin(removeBranch.ChildThird);
+                    removeBranch.RightCode = min.LeftCode;
+                }
+                removeBranch = min;
+                code = min.LeftCode.str;
+            }
+        }
+
+        public void FixingTreeAfterRemoval(Branch currentBranch, string code)
+        {
+            if (currentBranch == root && currentBranch.NeighborEmpty())
+            {
+                root = null;
+            }
+            else if (!currentBranch.NeighborEmpty())
+            {
+                if (currentBranch.LeftCode.str == code)
+                {
+                    currentBranch.LeftCode = currentBranch.RightCode;
+                }
+                currentBranch.RightCode = null;
+            }
+            else
+            {
+                Merge(currentBranch);
+            }
+        }
+
+        public void Merge(Branch currentBranch)
+        {
+            if (currentBranch != null)
+            {
+                Branch parent = currentBranch.Parent;
+                int numChild = currentBranch.WhichChildren();
+                if (numChild == 0)
+                {
+                    root = currentBranch.ChildFirst;
+                    root.Parent = null;
                     return;
                 }
-                else if(!currentBranch.NeighborEmpty()&&currentBranch.IsLeaf())
+                else if (numChild == 1)
                 {
-                    if(currentBranch.LeftCode.str==code)
+                    if (!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty())
                     {
-                        currentBranch.LeftCode = currentBranch.RightCode;
-                        currentBranch.RightCode = null;
+                        Redistribute(currentBranch, numChild);
+                        return;
+                    }
+                    if (currentBranch.LeftCode == null)
+                    {
+                        currentBranch.LeftCode = currentBranch.Parent.LeftCode;
+                        if (currentBranch.Parent.ChildSecond != null)
+                        {
+                            currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
+                            if (currentBranch.Parent.ChildSecond.ChildFirst != null)
+                            {
+                                currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
+                                currentBranch.ChildSecond.Parent = currentBranch;
+                                if (currentBranch.Parent.ChildSecond.ChildSecond != null)
+                                {
+                                    currentBranch.ChildThird = currentBranch.Parent.ChildSecond.ChildSecond;
+                                    currentBranch.ChildThird.Parent = currentBranch;
+                                }
+                            }
+                            currentBranch.Parent.ChildSecond = null;
+                        }
+                        currentBranch.Parent.LeftCode = null;
                     }
                     else
                     {
-                        currentBranch.RightCode = null;
-                    }
-                    return;
-                }
-                Branch parent = currentBranch.Parent;
-                if (parent!=null&&(!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty()))
-                {
-                    Redistribute(currentBranch);
-                    return;
-                }
-                Merge(currentBranch);
-
-            }
-        }
-
-        public Branch Merge(Branch currentBranch)
-        {
-            if(currentBranch==null)
-            {
-                return null;
-            }
-            Branch parent = currentBranch.Parent;
-            int numChild = currentBranch.WhichChildren();
-            if (numChild == 0)
-            {
-                root = currentBranch.ChildFirst;
-                root.Parent = null;
-                return null;
-            }
-            else if (numChild == 1)
-            {
-                if (!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty())
-                {
-                    Redistribute(currentBranch);
-                    return null;
-                }
-                if (currentBranch.LeftCode == null)
-                {
-                    currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                    if (currentBranch.Parent.ChildSecond != null)
-                    {
+                        currentBranch.LeftCode = currentBranch.Parent.LeftCode;
                         currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
-                        if (currentBranch.Parent.ChildSecond.ChildFirst != null)
+                        currentBranch.Parent.ChildSecond = null;
+                        currentBranch.Parent.LeftCode = null;
+                    }
+                }
+                else if (numChild == 2)
+                {
+                    if (!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty())
+                    {
+                        Redistribute(currentBranch, numChild);
+                        return;
+                    }
+                    if (currentBranch.LeftCode == null)
+                    {
+                        currentBranch.Parent.ChildFirst.RightCode = currentBranch.Parent.LeftCode;
+                        if (currentBranch.ChildFirst != null)
                         {
-                            currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
-                            currentBranch.ChildSecond.Parent = currentBranch;
-                            if (currentBranch.Parent.ChildSecond.ChildSecond != null)
-                            {
-                                currentBranch.ChildThird = currentBranch.Parent.ChildSecond.ChildSecond;
-                                currentBranch.ChildThird.Parent = currentBranch;
-                            }
+                            currentBranch.Parent.ChildFirst.ChildThird = currentBranch.ChildFirst;
+                            currentBranch.Parent.ChildFirst.ChildThird.Parent = currentBranch.Parent.ChildFirst;
                         }
+                        currentBranch.Parent.LeftCode = null;
                         currentBranch.Parent.ChildSecond = null;
                     }
-                    currentBranch.Parent.LeftCode = null;
-                }
-                else
-                {
-                    currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                    currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
-                    currentBranch.Parent.ChildSecond = null;
-                    currentBranch.Parent.LeftCode = null;
-                }
-            }
-            else if(numChild == 2)
-            {
-                if(!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty())
-                {
-                    Redistribute(currentBranch);
-                    return null;
-                }
-                if (currentBranch.LeftCode == null)
-                {
-                    currentBranch.Parent.ChildFirst.RightCode = currentBranch.Parent.LeftCode;
-                    if (currentBranch.ChildFirst != null)
+                    else
                     {
-                        currentBranch.Parent.ChildFirst.ChildThird = currentBranch.ChildFirst;
-                        currentBranch.Parent.ChildFirst.ChildThird.Parent = currentBranch.Parent.ChildFirst;
+                        currentBranch.Parent.ChildFirst.RightCode = currentBranch.Parent.LeftCode;
+                        currentBranch.Parent.LeftCode = null;
+                        currentBranch.Parent.ChildSecond = null;
                     }
-                    currentBranch.Parent.LeftCode = null;
-                    currentBranch.Parent.ChildSecond = null;
                 }
-                else
+                else if (numChild == 3)
                 {
-                    currentBranch.Parent.ChildFirst.RightCode = currentBranch.Parent.LeftCode;
-                    currentBranch.Parent.LeftCode = null;
-                    currentBranch.Parent.ChildSecond = null;
+                    if (!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty())
+                    {
+                        Redistribute(currentBranch, numChild);
+                        return;
+                    }
                 }
+                Merge(parent);
             }
-            else if(numChild == 3)
-            {
-                if (!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty())
-                {
-                    Redistribute(currentBranch);
-                    return null;
-                }
-            }
-            return Merge(parent);
         }
 
-        public void Redistribute(Branch currentBranch)
+        public void Redistribute(Branch currentBranch,int numChild)
         {
-            int numChild = currentBranch.WhichChildren();
             Code code = currentBranch.LeftCode;
-            if (numChild==0)
-            {
-                return;
-            }
-            else if (numChild == 1)
+            if (numChild == 1)
             {
                 if (!currentBranch.Parent.ChildSecond.NeighborEmpty())
                 {

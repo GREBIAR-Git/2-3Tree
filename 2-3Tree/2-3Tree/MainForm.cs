@@ -10,12 +10,6 @@ namespace _2_3Tree
         {
             InitializeComponent();
             tree = new Tree();
-            RandomCode code = new RandomCode();
-            for(int i=0;i<100;i++)
-            {
-                tree.Insert(code.Random());
-            }
-            TreeDrawingWithFoundBranch();
             
         }
         void buttonAdd_Click(object sender, EventArgs e)
@@ -77,6 +71,18 @@ namespace _2_3Tree
         {
             tree = new Tree();
             TreeDrawing();
+        }
+
+        void buttonRandom_Click(object sender, EventArgs e)
+        {
+            RandomCode code = new RandomCode();
+            for (int i = 0; i < 20; i++)
+            {
+                tree.Insert(code.Random());
+            }
+            treeBox.SuspendLayout();
+            TreeDrawingWithFoundBranch();
+            treeBox.ResumeLayout();
         }
     }
 }

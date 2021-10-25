@@ -40,6 +40,7 @@ namespace _2_3Tree
             this.buttonDel = new System.Windows.Forms.Button();
             this.textBoxDel = new System.Windows.Forms.TextBox();
             this.textBoxAdd = new System.Windows.Forms.TextBox();
+            this.buttonRandom = new System.Windows.Forms.Button();
             this.PanelMain.SuspendLayout();
             this.PanelMenuItem.SuspendLayout();
             this.SuspendLayout();
@@ -83,11 +84,13 @@ namespace _2_3Tree
             this.PanelMenuItem.Controls.Add(this.buttonDel, 1, 3);
             this.PanelMenuItem.Controls.Add(this.textBoxDel, 0, 3);
             this.PanelMenuItem.Controls.Add(this.textBoxAdd, 0, 2);
+            this.PanelMenuItem.Controls.Add(this.buttonRandom, 0, 5);
             this.PanelMenuItem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PanelMenuItem.Location = new System.Drawing.Point(572, 10);
             this.PanelMenuItem.Margin = new System.Windows.Forms.Padding(10);
             this.PanelMenuItem.Name = "PanelMenuItem";
-            this.PanelMenuItem.RowCount = 6;
+            this.PanelMenuItem.RowCount = 7;
+            this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -179,6 +182,19 @@ namespace _2_3Tree
             this.textBoxAdd.TextChanged += new System.EventHandler(this.textBox_TextChanged);
             this.textBoxAdd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxAdd_KeyDown);
             // 
+            // buttonRandom
+            // 
+            this.buttonRandom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.PanelMenuItem.SetColumnSpan(this.buttonRandom, 2);
+            this.buttonRandom.Location = new System.Drawing.Point(0, 204);
+            this.buttonRandom.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.buttonRandom.Name = "buttonRandom";
+            this.buttonRandom.Size = new System.Drawing.Size(277, 70);
+            this.buttonRandom.TabIndex = 9;
+            this.buttonRandom.Text = "Добавить 20 случайных значений";
+            this.buttonRandom.UseVisualStyleBackColor = true;
+            this.buttonRandom.Click += new System.EventHandler(this.buttonRandom_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -208,6 +224,7 @@ namespace _2_3Tree
         private System.Windows.Forms.TextBox textBoxAdd;
         private System.Windows.Forms.Label labelSearch;
         private System.Windows.Forms.Button buttonClear;
+        private System.Windows.Forms.Button buttonRandom;
     }
 }
 
