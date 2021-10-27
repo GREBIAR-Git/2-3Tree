@@ -8,8 +8,8 @@ namespace _2_3Tree
 {
     class RandomCode
     {
-        Random rnd;
-        public string Random()
+        static Random rnd = new Random();
+        public static string Random()
         {
             string code = string.Empty;
             if(rnd.Next(12) < 11)
@@ -25,11 +25,6 @@ namespace _2_3Tree
                 }
             }
             return code;
-        }
-
-        public RandomCode()
-        {
-            rnd = new Random();
         }
     }
 }

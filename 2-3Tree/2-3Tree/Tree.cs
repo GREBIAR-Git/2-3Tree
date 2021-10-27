@@ -23,6 +23,12 @@ namespace _2_3Tree
                 root = currentBranch.SplitBranch(root);
             }
         }
+
+        public void Insert()
+        {
+            Insert(RandomCode.Random());
+        }
+
         Branch SearchInsertionPoint(Branch branch, Code code)
         {
             if(branch==null || branch.IsLeaf())

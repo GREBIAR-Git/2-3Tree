@@ -75,10 +75,9 @@ namespace _2_3Tree
 
         void buttonRandom_Click(object sender, EventArgs e)
         {
-            RandomCode code = new RandomCode();
             for (int i = 0; i < 20; i++)
             {
-                tree.Insert(code.Random());
+                tree.Insert();
             }
             treeBox.SuspendLayout();
             TreeDrawingWithFoundBranch();
