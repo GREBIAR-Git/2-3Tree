@@ -190,8 +190,8 @@ namespace _2_3Tree
             this.buttonRandom.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.buttonRandom.Name = "buttonRandom";
             this.buttonRandom.Size = new System.Drawing.Size(277, 70);
-            this.buttonRandom.TabIndex = 9;
-            this.buttonRandom.Text = "Добавить 20 случайных значений";
+            this.buttonRandom.TabIndex = 6;
+            this.buttonRandom.Text = "Добавить 10 случайных значений";
             this.buttonRandom.UseVisualStyleBackColor = true;
             this.buttonRandom.Click += new System.EventHandler(this.buttonRandom_Click);
             // 
@@ -202,7 +202,7 @@ namespace _2_3Tree
             this.ClientSize = new System.Drawing.Size(862, 450);
             this.Controls.Add(this.PanelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(550, 270);
+            this.MinimumSize = new System.Drawing.Size(625, 345);
             this.Name = "MainForm";
             this.Text = "2-3Tree";
             this.PanelMain.ResumeLayout(false);

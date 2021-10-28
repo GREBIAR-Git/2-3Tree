@@ -28,7 +28,6 @@ namespace _2_3Tree
         {
             Insert(RandomCode.Random());
         }
-
         Branch SearchInsertionPoint(Branch branch, Code code)
         {
             if(branch==null || branch.IsLeaf())
@@ -68,7 +67,7 @@ namespace _2_3Tree
             if (removeBranch!=null)
             {
                 PreparingForDeletion(ref removeBranch, ref code);
-                FixingTreeAfterRemoval(removeBranch, code);
+                FixingTree(removeBranch, code);
             }
         }
 
@@ -92,19 +91,19 @@ namespace _2_3Tree
             }
         }
 
-        public void FixingTreeAfterRemoval(Branch currentBranch, string code)
+        public void FixingTree(Branch currentBranch, string code)
         {
-            if (currentBranch == root && currentBranch.NeighborEmpty())
-            {
-                root = null;
-            }
-            else if (!currentBranch.NeighborEmpty())
+            if (!currentBranch.NeighborEmpty())
             {
                 if (currentBranch.LeftCode.str == code)
                 {
                     currentBranch.LeftCode = currentBranch.RightCode;
                 }
                 currentBranch.RightCode = null;
+            }
+            else if (currentBranch == root)
+            {
+                root = null;
             }
             else
             {

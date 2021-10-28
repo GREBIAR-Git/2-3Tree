@@ -27,6 +27,14 @@ namespace _2_3Tree
                 buttonAdd_Click(sender, e);
                 e.SuppressKeyPress = true;
             }
+            else if (e.KeyCode == Keys.Up)
+            {
+                textBoxSearch.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                textBoxDel.Focus();
+            }
         }
         void buttonDel_Click(object sender, EventArgs e)
         {
@@ -43,6 +51,14 @@ namespace _2_3Tree
                 buttonDel_Click(sender, e);
                 e.SuppressKeyPress = true;
             }
+            else if (e.KeyCode == Keys.Up)
+            {
+                textBoxAdd.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                textBoxSearch.Focus();
+            }
         }
         void textBox_TextChanged(object sender, EventArgs e)
         {
@@ -58,6 +74,14 @@ namespace _2_3Tree
             {
                 e.SuppressKeyPress = true;
             }
+            else if (e.KeyCode == Keys.Up)
+            {
+                textBoxDel.Focus();
+            }
+            else if(e.KeyCode == Keys.Down)
+            {
+                textBoxAdd.Focus();
+            }
         }
         void RemoveSpecialSymbols(object sender)
         {
@@ -70,12 +94,15 @@ namespace _2_3Tree
         void buttonClear_Click(object sender, EventArgs e)
         {
             tree = new Tree();
+            textBoxAdd.Text = string.Empty;
+            textBoxDel.Text = string.Empty;
+            textBoxSearch.Text = string.Empty;
             TreeDrawing();
         }
 
         void buttonRandom_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 10; i++)
             {
                 tree.Insert();
             }

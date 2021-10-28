@@ -7,8 +7,8 @@ namespace _2_3Tree
 #pragma warning disable CS0661 // Тип определяет оператор == или оператор !=, но не переопределяет Object.GetHashCode()
     class Code
     {
-        public string str { get; set; }
-        public int[] code { get; set; }
+        public string str { get;private set; }
+        public int[] code { get;private set; }
         bool digit;
 
         public static bool operator <=(Code a, Code b)
@@ -333,8 +333,7 @@ namespace _2_3Tree
         public Code(string str)
         {
             this.str = str;
-            int code;
-            digit = Int32.TryParse(str, out code);
+            digit = Int32.TryParse(str, out int code);
             if (digit)
             {
                 this.code = new int[] { code };

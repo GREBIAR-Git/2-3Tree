@@ -210,11 +210,6 @@
             }
         }
 
-        public Branch()
-        {
-            LeftCode.str = null;
-            RightCode.str = null;
-        }
         public Branch(string code)
         {
             this.LeftCode = new Code(code);
