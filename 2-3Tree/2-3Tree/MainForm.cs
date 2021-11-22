@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace _2_3Tree
@@ -17,14 +18,18 @@ namespace _2_3Tree
         {
             if (textBoxAdd.Text != "")
             {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 if (tree.Insert(textBoxAdd.Text))
                 {
-                    StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - успешно добавлен";
+                    stopwatch.Stop();
+                    StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - успешно добавлен; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
                     TreeDrawingWithFoundBranch();
                 }
                 else
                 {
-                    StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - уже существует";
+                    stopwatch.Stop();
+                    StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - уже существует; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
                 }
             }
             else
@@ -54,14 +59,18 @@ namespace _2_3Tree
         {
             if (textBoxDel.Text != "")
             {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 if (tree.Remove(textBoxDel.Text))
                 {
-                    StatusBar.Text = "Ключ: " + textBoxDel.Text + " - удалён";
+                    stopwatch.Stop();
+                    StatusBar.Text = "Ключ: " + textBoxDel.Text + " - удалён; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
                     TreeDrawingWithFoundBranch();
                 }
                 else
                 {
-                    StatusBar.Text = "Ключ: " + textBoxDel.Text + " - не существует";
+                    stopwatch.Stop();
+                    StatusBar.Text = "Ключ: " + textBoxDel.Text + " - не существует; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
                 }
             }
             else
@@ -144,7 +153,7 @@ namespace _2_3Tree
             treeBox.SuspendLayout();
             TreeDrawingWithFoundBranch();
             treeBox.ResumeLayout();
-            StatusBar.Text = "К дереву длбавленно 10 ключей";
+            StatusBar.Text = "К дереву долбавлено 10 ключей";
         }
     }
 }

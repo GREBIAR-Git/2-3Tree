@@ -218,7 +218,7 @@ namespace _2_3Tree
             // 
             this.StatusBar.Margin = new System.Windows.Forms.Padding(0);
             this.StatusBar.Name = "StatusBar";
-            this.StatusBar.Size = new System.Drawing.Size(0, 40);
+            this.StatusBar.Size = new System.Drawing.Size(0, 0);
             // 
             // MainForm
             // 

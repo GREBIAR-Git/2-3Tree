@@ -1,4 +1,6 @@
-﻿namespace _2_3Tree
+﻿using System.Diagnostics;
+
+namespace _2_3Tree
 {
     public partial class MainForm
     {
@@ -13,9 +15,13 @@
         }
         public void TreeDrawingWithFoundBranch()
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             Branch foundBranch = tree.Search(textBoxSearch.Text);
+            stopwatch.Stop();
             if (foundBranch != null)
             {
+                StatusBar.Text = "Ключ: " + textBoxSearch.Text + " - найден; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
                 treeBox.Nodes.Clear();
                 if (tree.Root != null)
                 {
@@ -25,6 +31,7 @@
             }
             else
             {
+                StatusBar.Text = "Ключ: " + textBoxSearch.Text + " - не найден; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
                 TreeDrawing();
             }
         }
