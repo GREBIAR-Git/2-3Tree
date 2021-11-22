@@ -7,17 +7,17 @@ namespace _2_3Tree
 #pragma warning disable CS0661 // Тип определяет оператор == или оператор !=, но не переопределяет Object.GetHashCode()
     class Code
     {
-        public string str { get;private set; }
-        public int[] code { get;private set; }
+        public string str { get; private set; }
+        public int[] code { get; private set; }
         bool digit;
 
         public static bool operator <=(Code a, Code b)
         {
-            if(a.digit)
+            if (a.digit)
             {
-                if(b.digit)
+                if (b.digit)
                 {
-                    if(a.code[0]<=b.code[0])
+                    if (a.code[0] <= b.code[0])
                     {
                         return true;
                     }
@@ -40,7 +40,7 @@ namespace _2_3Tree
                 else
                 {
                     int length;
-                    if (a.code.Length<=b.code.Length)
+                    if (a.code.Length <= b.code.Length)
                     {
                         length = a.code.Length;
                     }
@@ -48,9 +48,9 @@ namespace _2_3Tree
                     {
                         length = b.code.Length;
                     }
-                    for(int i=0;i<length;i++)
+                    for (int i = 0; i < length; i++)
                     {
-                        if(a.code[i]>b.code[i])
+                        if (a.code[i] > b.code[i])
                         {
                             return false;
                         }
@@ -155,7 +155,7 @@ namespace _2_3Tree
                 }
             }
         }
-        public static bool operator >(Code a,Code b)
+        public static bool operator >(Code a, Code b)
         {
             if (a.digit)
             {
@@ -268,11 +268,11 @@ namespace _2_3Tree
         }
         public static bool operator !=(Code a, Code b)
         {
-            if ((Object)a != null && (Object)b == null|| (Object)a == null && (Object)b != null)
+            if ((Object)a != null && (Object)b == null || (Object)a == null && (Object)b != null)
             {
                 return true;
             }
-            else if((Object)a ==null && (Object)b == null)
+            else if ((Object)a == null && (Object)b == null)
             {
                 return false;
             }
@@ -339,7 +339,7 @@ namespace _2_3Tree
                 this.code = new int[] { code };
             }
             else
-            { 
+            {
                 this.code = str.ToCharArray().Select(x => (int)x).ToArray();
             }
         }

@@ -15,7 +15,7 @@
 
         public bool IsLeaf()
         {
-            if(ChildFirst==null&& ChildSecond==null&& ChildThird==null)
+            if (ChildFirst == null && ChildSecond == null && ChildThird == null)
             {
                 return true;
             }
@@ -23,7 +23,7 @@
         }
         public bool NeighborEmpty()
         {
-            if (RightCode==null)
+            if (RightCode == null)
             {
                 return true;
             }
@@ -48,7 +48,7 @@
                 CenterCode = LeftCode;
                 LeftCode = code;
             }
-            else if(RightCode >= code)
+            else if (RightCode >= code)
             {
                 CenterCode = code;
             }
@@ -106,7 +106,7 @@
                         SetParent(ChildThird);
                     }
                 }
-                else if (ChildExtra == null && CenterCode!=null)
+                else if (ChildExtra == null && CenterCode != null)
                 {
                     if (ChildFirst.LeftCode > branch.LeftCode)
                     {
@@ -146,11 +146,11 @@
 
         public int WhichChildren()
         {
-            if(Parent==null)
+            if (Parent == null)
             {
                 return 0;
             }
-            else if(Parent.ChildFirst == this)
+            else if (Parent.ChildFirst == this)
             {
                 return 1;
             }

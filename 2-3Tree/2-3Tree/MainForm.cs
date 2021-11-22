@@ -9,17 +9,30 @@ namespace _2_3Tree
         public MainForm()
         {
             InitializeComponent();
+            StatusBar.Text = "Программа инициализирована";
             tree = new Tree();
-            
         }
+
         void buttonAdd_Click(object sender, EventArgs e)
         {
-            if(textBoxAdd.Text!="")
+            if (textBoxAdd.Text != "")
             {
-                tree.Insert(textBoxAdd.Text);
-                TreeDrawingWithFoundBranch();
+                if (tree.Insert(textBoxAdd.Text))
+                {
+                    StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - успешно добавлен";
+                    TreeDrawingWithFoundBranch();
+                }
+                else
+                {
+                    StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - уже существует";
+                }
+            }
+            else
+            {
+                StatusBar.Text = "Поле с ключом пустое";
             }
         }
+
         void textBoxAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -36,14 +49,27 @@ namespace _2_3Tree
                 textBoxDel.Focus();
             }
         }
+
         void buttonDel_Click(object sender, EventArgs e)
         {
             if (textBoxDel.Text != "")
             {
-                tree.Remove(textBoxDel.Text);
-                TreeDrawingWithFoundBranch();
+                if (tree.Remove(textBoxDel.Text))
+                {
+                    StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - удалён";
+                    TreeDrawingWithFoundBranch();
+                }
+                else
+                {
+                    StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - не существует";
+                }
+            }
+            else
+            {
+                StatusBar.Text = "Поле с ключом пустое";
             }
         }
+
         void textBoxDel_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -60,14 +86,17 @@ namespace _2_3Tree
                 textBoxSearch.Focus();
             }
         }
+
         void textBox_TextChanged(object sender, EventArgs e)
         {
             RemoveSpecialSymbols(sender);
         }
+
         void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
             TreeDrawingWithFoundBranch();
         }
+
         void textBoxSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -78,11 +107,12 @@ namespace _2_3Tree
             {
                 textBoxDel.Focus();
             }
-            else if(e.KeyCode == Keys.Down)
+            else if (e.KeyCode == Keys.Down)
             {
                 textBoxAdd.Focus();
             }
         }
+
         void RemoveSpecialSymbols(object sender)
         {
             TextBox textBox = (TextBox)sender;
@@ -91,12 +121,14 @@ namespace _2_3Tree
             textBox.Text = textBox.Text.Replace(">", "");
             textBox.SelectionStart = cursor;
         }
+
         void buttonClear_Click(object sender, EventArgs e)
         {
             tree = new Tree();
             textBoxAdd.Text = string.Empty;
             textBoxDel.Text = string.Empty;
             textBoxSearch.Text = string.Empty;
+            StatusBar.Text = "Дерево полностью удалено";
             TreeDrawing();
         }
 
@@ -104,11 +136,15 @@ namespace _2_3Tree
         {
             for (int i = 0; i < 10; i++)
             {
-                tree.Insert();
+                if (!tree.Insert())
+                {
+                    i--;
+                }
             }
             treeBox.SuspendLayout();
             TreeDrawingWithFoundBranch();
             treeBox.ResumeLayout();
+            StatusBar.Text = "К дереву длбавленно 10 ключей";
         }
     }
 }

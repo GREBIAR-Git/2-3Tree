@@ -4,41 +4,59 @@ namespace _2_3Tree
 {
     class Tree
     {
-        public Branch root { get; set; }
-        public void Insert(string code)
+        public Branch Root { get; set; }
+
+        public bool Insert()
+        {
+            return Insert(RandomCode.Random());
+        }
+
+        public bool Insert(string code)
         {
             Code newCode = new Code(code);
-            Branch currentBranch = SearchInsertionPoint(root, newCode);
-            if (currentBranch == null)
+            if (Root == null)
             {
-                root = new Branch(code);
-            }
-            else if (currentBranch.NeighborEmpty())
-            {
-                currentBranch.SetNeighbor(newCode);
+                Root = new Branch(newCode);
             }
             else
             {
-                currentBranch.SetCenter(newCode);
-                root = currentBranch.SplitBranch(root);
+                Branch currentBranch = SearchInsertionPoint(Root, newCode);
+                if (currentBranch == null)
+                {
+                    return false;
+                }
+                else if (currentBranch.NeighborEmpty())
+                {
+                    currentBranch.SetNeighbor(newCode);
+                }
+                else
+                {
+                    currentBranch.SetCenter(newCode);
+                    Root = currentBranch.SplitBranch(Root);
+                }
             }
+            return true;
         }
 
-        public void Insert()
-        {
-            Insert(RandomCode.Random());
-        }
         Branch SearchInsertionPoint(Branch branch, Code code)
         {
-            if(branch==null || branch.IsLeaf())
+            if (branch.IsLeaf())
             {
+                if (code == branch.LeftCode || code == branch.RightCode)
+                {
+                    return null;
+                }
                 return branch;
             }
-            else if(branch.NeighborEmpty())
+            else if (branch.NeighborEmpty())
             {
-                if(code < branch.LeftCode)
+                if (code < branch.LeftCode)
                 {
                     return SearchInsertionPoint(branch.ChildFirst, code);
+                }
+                else if (code == branch.LeftCode)
+                {
+                    return null;
                 }
                 else
                 {
@@ -51,9 +69,17 @@ namespace _2_3Tree
                 {
                     return SearchInsertionPoint(branch.ChildFirst, code);
                 }
-                else if (code >= branch.LeftCode && code < branch.RightCode)
+                else if (code == branch.LeftCode)
+                {
+                    return null;
+                }
+                else if (code > branch.LeftCode && code < branch.RightCode)
                 {
                     return SearchInsertionPoint(branch.ChildSecond, code);
+                }
+                else if (code == branch.RightCode)
+                {
+                    return null;
                 }
                 else
                 {
@@ -61,17 +87,22 @@ namespace _2_3Tree
                 }
             }
         }
-        public void Remove(string code)
+        public bool Remove(string code)
         {
             Branch removeBranch = Search(code);
-            if (removeBranch!=null)
+            if (removeBranch != null)
             {
                 PreparingForDeletion(ref removeBranch, ref code);
                 FixingTree(removeBranch, code);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
-        void PreparingForDeletion(ref Branch removeBranch,ref string code)
+        void PreparingForDeletion(ref Branch removeBranch, ref string code)
         {
             if (!removeBranch.IsLeaf())
             {
@@ -101,9 +132,9 @@ namespace _2_3Tree
                 }
                 currentBranch.RightCode = null;
             }
-            else if (currentBranch == root)
+            else if (currentBranch == Root)
             {
-                root = null;
+                Root = null;
             }
             else
             {
@@ -119,8 +150,8 @@ namespace _2_3Tree
                 int numChild = currentBranch.WhichChildren();
                 if (numChild == 0)
                 {
-                    root = currentBranch.ChildFirst;
-                    root.Parent = null;
+                    Root = currentBranch.ChildFirst;
+                    Root.Parent = null;
                     return;
                 }
                 else if (numChild == 1)
@@ -195,7 +226,7 @@ namespace _2_3Tree
             }
         }
 
-        public void Redistribute(Branch currentBranch,int numChild)
+        public void Redistribute(Branch currentBranch, int numChild)
         {
             Code code = currentBranch.LeftCode;
             if (numChild == 1)
@@ -206,7 +237,7 @@ namespace _2_3Tree
                     currentBranch.Parent.LeftCode = currentBranch.Parent.ChildSecond.LeftCode;
                     currentBranch.Parent.ChildSecond.LeftCode = currentBranch.Parent.ChildSecond.RightCode;
                     currentBranch.Parent.ChildSecond.RightCode = null;
-                    if(code==null)
+                    if (code == null)
                     {
                         currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
                         currentBranch.ChildSecond.Parent = currentBranch;
@@ -239,7 +270,7 @@ namespace _2_3Tree
                         currentBranch.Parent.LeftCode = currentBranch.Parent.RightCode;
                         currentBranch.Parent.RightCode = null;
                         currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
-                        if(code == null)
+                        if (code == null)
                         {
                             currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
                             currentBranch.ChildSecond.Parent = currentBranch;
@@ -259,7 +290,7 @@ namespace _2_3Tree
                     currentBranch.LeftCode = currentBranch.Parent.LeftCode;
                     currentBranch.Parent.LeftCode = currentBranch.Parent.ChildFirst.RightCode;
                     currentBranch.Parent.ChildFirst.RightCode = null;
-                    if(code == null)
+                    if (code == null)
                     {
                         currentBranch.ChildSecond = currentBranch.ChildFirst;
                         currentBranch.ChildFirst = first.ChildThird;
@@ -275,7 +306,7 @@ namespace _2_3Tree
                         first.RightCode = currentBranch.Parent.LeftCode;
                         currentBranch.Parent.LeftCode = currentBranch.Parent.RightCode;
                         currentBranch.Parent.RightCode = null;
-                        if(code ==null)
+                        if (code == null)
                         {
                             first.ChildThird = currentBranch.ChildFirst;
                             first.ChildThird.Parent = first;
@@ -290,7 +321,7 @@ namespace _2_3Tree
                         currentBranch.Parent.RightCode = currentBranch.Parent.ChildThird.LeftCode;
                         currentBranch.Parent.ChildThird.LeftCode = currentBranch.Parent.ChildThird.RightCode;
                         currentBranch.Parent.ChildThird.RightCode = null;
-                        if(code == null)
+                        if (code == null)
                         {
                             currentBranch.ChildSecond = third.ChildFirst;
                             currentBranch.ChildSecond.Parent = currentBranch;
@@ -308,7 +339,7 @@ namespace _2_3Tree
                     currentBranch.LeftCode = currentBranch.Parent.RightCode;
                     currentBranch.Parent.RightCode = currentBranch.Parent.ChildSecond.RightCode;
                     currentBranch.Parent.ChildSecond.RightCode = null;
-                    if(code ==null)
+                    if (code == null)
                     {
                         currentBranch.ChildSecond = currentBranch.ChildFirst;
                         currentBranch.ChildFirst = currentBranch.Parent.ChildSecond.ChildThird;
@@ -320,7 +351,7 @@ namespace _2_3Tree
                 {
                     currentBranch.Parent.ChildSecond.RightCode = currentBranch.Parent.RightCode;
                     currentBranch.Parent.RightCode = null;
-                    if(code == null)
+                    if (code == null)
                     {
                         currentBranch.Parent.ChildSecond.ChildThird = currentBranch.ChildFirst;
                         currentBranch.Parent.ChildSecond.ChildThird.Parent = currentBranch.Parent.ChildSecond;
@@ -336,7 +367,7 @@ namespace _2_3Tree
             {
                 return null;
             }
-            else if(currentBranch.ChildFirst==null)
+            else if (currentBranch.ChildFirst == null)
             {
                 return currentBranch;
             }
@@ -347,13 +378,13 @@ namespace _2_3Tree
         }
         public Branch Search(string strCode)
         {
-            return Search(new Code(strCode),root);
+            return Search(new Code(strCode), Root);
         }
         public Branch Search(Code code, Branch currentBranch)
         {
             if (currentBranch != null)
             {
-                if (currentBranch.LeftCode==code  ||(currentBranch.RightCode!=null && currentBranch.RightCode==code))
+                if (currentBranch.LeftCode == code || (currentBranch.RightCode != null && currentBranch.RightCode == code))
                 {
                     return currentBranch;
                 }
@@ -388,11 +419,11 @@ namespace _2_3Tree
         }
         public void ShowTreeWithFoundBranch(TreeNodeCollection node, Branch foundBranch)
         {
-            ShowBranch(node, root, foundBranch);
+            ShowBranch(node, Root, foundBranch);
         }
         public void ShowTree(TreeNodeCollection node)
         {
-            ShowBranch(node, root);
+            ShowBranch(node, Root);
         }
         void ShowBranch(TreeNodeCollection node, Branch currentBranch)
         {
@@ -418,11 +449,11 @@ namespace _2_3Tree
         {
             if (currentBranch.RightCode != null)
             {
-                nodeInside = node.Add("<"+currentBranch.LeftCode.str + "><" + currentBranch.RightCode.str+">");
+                nodeInside = node.Add("<" + currentBranch.LeftCode.str + "><" + currentBranch.RightCode.str + ">");
             }
             else
             {
-                nodeInside = node.Add("<"+currentBranch.LeftCode.str+">");
+                nodeInside = node.Add("<" + currentBranch.LeftCode.str + ">");
             }
         }
         void TransitionToChild(Branch childBranch, TreeNode nodeInside)
@@ -442,11 +473,11 @@ namespace _2_3Tree
 
         public Tree()
         {
-            root = null;
+            Root = null;
         }
-        public Tree(Branch root)
+        public Tree(Branch Root)
         {
-            this.root = root;
+            this.Root = Root;
         }
     }
 }

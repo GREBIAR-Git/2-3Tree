@@ -41,8 +41,11 @@ namespace _2_3Tree
             this.textBoxDel = new System.Windows.Forms.TextBox();
             this.textBoxAdd = new System.Windows.Forms.TextBox();
             this.buttonRandom = new System.Windows.Forms.Button();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.StatusBar = new System.Windows.Forms.ToolStripStatusLabel();
             this.PanelMain.SuspendLayout();
             this.PanelMenuItem.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeBox
@@ -53,7 +56,7 @@ namespace _2_3Tree
             this.treeBox.Location = new System.Drawing.Point(10, 10);
             this.treeBox.Margin = new System.Windows.Forms.Padding(10);
             this.treeBox.Name = "treeBox";
-            this.treeBox.Size = new System.Drawing.Size(542, 430);
+            this.treeBox.Size = new System.Drawing.Size(542, 390);
             this.treeBox.TabIndex = 100;
             this.treeBox.TabStop = false;
             // 
@@ -64,11 +67,13 @@ namespace _2_3Tree
             this.PanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.PanelMain.Controls.Add(this.treeBox, 0, 0);
             this.PanelMain.Controls.Add(this.PanelMenuItem, 1, 0);
+            this.PanelMain.Controls.Add(this.statusStrip, 0, 1);
             this.PanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PanelMain.Location = new System.Drawing.Point(0, 0);
             this.PanelMain.Name = "PanelMain";
-            this.PanelMain.RowCount = 1;
+            this.PanelMain.RowCount = 2;
             this.PanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.PanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.PanelMain.Size = new System.Drawing.Size(862, 450);
             this.PanelMain.TabIndex = 1;
             // 
@@ -97,7 +102,7 @@ namespace _2_3Tree
             this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.PanelMenuItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.PanelMenuItem.Size = new System.Drawing.Size(280, 430);
+            this.PanelMenuItem.Size = new System.Drawing.Size(280, 390);
             this.PanelMenuItem.TabIndex = 1;
             // 
             // buttonClear
@@ -195,6 +200,26 @@ namespace _2_3Tree
             this.buttonRandom.UseVisualStyleBackColor = true;
             this.buttonRandom.Click += new System.EventHandler(this.buttonRandom_Click);
             // 
+            // statusStrip
+            // 
+            this.PanelMain.SetColumnSpan(this.statusStrip, 2);
+            this.statusStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statusStrip.GripMargin = new System.Windows.Forms.Padding(0);
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(28, 28);
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusBar});
+            this.statusStrip.Location = new System.Drawing.Point(0, 410);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(862, 40);
+            this.statusStrip.TabIndex = 101;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // StatusBar
+            // 
+            this.StatusBar.Margin = new System.Windows.Forms.Padding(0);
+            this.StatusBar.Name = "StatusBar";
+            this.StatusBar.Size = new System.Drawing.Size(0, 40);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -202,12 +227,15 @@ namespace _2_3Tree
             this.ClientSize = new System.Drawing.Size(862, 450);
             this.Controls.Add(this.PanelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(625, 345);
+            this.MinimumSize = new System.Drawing.Size(620, 385);
             this.Name = "MainForm";
             this.Text = "2-3Tree";
             this.PanelMain.ResumeLayout(false);
+            this.PanelMain.PerformLayout();
             this.PanelMenuItem.ResumeLayout(false);
             this.PanelMenuItem.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -225,6 +253,8 @@ namespace _2_3Tree
         private System.Windows.Forms.Label labelSearch;
         private System.Windows.Forms.Button buttonClear;
         private System.Windows.Forms.Button buttonRandom;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBar;
     }
 }
 

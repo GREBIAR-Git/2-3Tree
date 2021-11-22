@@ -5,7 +5,7 @@
         public void TreeDrawing()
         {
             treeBox.Nodes.Clear();
-            if (tree.root != null)
+            if (tree.Root != null)
             {
                 tree.ShowTree(treeBox.Nodes);
             }
@@ -17,7 +17,7 @@
             if (foundBranch != null)
             {
                 treeBox.Nodes.Clear();
-                if (tree.root != null)
+                if (tree.Root != null)
                 {
                     tree.ShowTreeWithFoundBranch(treeBox.Nodes, foundBranch);
                 }
