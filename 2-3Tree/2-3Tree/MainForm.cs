@@ -56,12 +56,12 @@ namespace _2_3Tree
             {
                 if (tree.Remove(textBoxDel.Text))
                 {
-                    StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - удалён";
+                    StatusBar.Text = "Ключ: " + textBoxDel.Text + " - удалён";
                     TreeDrawingWithFoundBranch();
                 }
                 else
                 {
-                    StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - не существует";
+                    StatusBar.Text = "Ключ: " + textBoxDel.Text + " - не существует";
                 }
             }
             else

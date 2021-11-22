@@ -427,16 +427,14 @@ namespace _2_3Tree
         }
         void ShowBranch(TreeNodeCollection node, Branch currentBranch)
         {
-            TreeNode nodeInside;
-            AddNodeToTreeView(currentBranch, out nodeInside, node);
+            AddNodeToTreeView(currentBranch, out TreeNode nodeInside, node);
             TransitionToChild(currentBranch.ChildFirst, nodeInside);
             TransitionToChild(currentBranch.ChildSecond, nodeInside);
             TransitionToChild(currentBranch.ChildThird, nodeInside);
         }
         void ShowBranch(TreeNodeCollection node, Branch currentBranch, Branch foundBranch)
         {
-            TreeNode nodeInside;
-            AddNodeToTreeView(currentBranch, out nodeInside, node);
+            AddNodeToTreeView(currentBranch, out TreeNode nodeInside, node);
             if (foundBranch == currentBranch)
             {
                 nodeInside.BackColor = System.Drawing.Color.Red;
