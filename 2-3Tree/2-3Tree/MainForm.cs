@@ -24,7 +24,7 @@ namespace _2_3Tree
                 {
                     stopwatch.Stop();
                     StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - успешно добавлен; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
-                    TreeDrawingWithFoundBranch();
+                    TreeDrawing();
                 }
                 else
                 {
@@ -65,7 +65,7 @@ namespace _2_3Tree
                 {
                     stopwatch.Stop();
                     StatusBar.Text = "Ключ: " + textBoxDel.Text + " - удалён; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
-                    TreeDrawingWithFoundBranch();
+                    TreeDrawing();
                 }
                 else
                 {
@@ -103,7 +103,14 @@ namespace _2_3Tree
 
         void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
-            TreeDrawingWithFoundBranch();
+            if (textBoxSearch.Text != String.Empty)
+            {
+                TreeDrawingWithFoundBranch();
+            }
+            else
+            {
+                TreeDrawing();
+            }
         }
 
         void textBoxSearch_KeyDown(object sender, KeyEventArgs e)
@@ -151,9 +158,17 @@ namespace _2_3Tree
                 }
             }
             treeBox.SuspendLayout();
-            TreeDrawingWithFoundBranch();
+            TreeDrawing();
             treeBox.ResumeLayout();
             StatusBar.Text = "К дереву добавлено 10 ключей";
+        }
+
+        void textBoxSearch_Enter(object sender, EventArgs e)
+        {
+            if(textBoxSearch.Text != String.Empty)
+            {
+                TreeDrawingWithFoundBranch();
+            }
         }
     }
 }
