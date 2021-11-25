@@ -153,7 +153,7 @@ namespace _2_3Tree
             treeBox.SuspendLayout();
             TreeDrawingWithFoundBranch();
             treeBox.ResumeLayout();
-            StatusBar.Text = "К дереву долбавлено 10 ключей";
+            StatusBar.Text = "К дереву добавлено 10 ключей";
         }
     }
 }

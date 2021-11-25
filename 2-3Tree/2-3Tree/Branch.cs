@@ -171,27 +171,26 @@
         {
             branch.Parent = this;
         }
-        public Branch SplitBranch(Branch root)
+        public void SplitBranch(ref Branch root)
         {
             if (Parent == null)
             {
                 Parent = new Branch(CenterCode);
                 Parent.AddChild(this);
                 SplitMainPart();
-                return Parent;
+                root = Parent;
             }
             else if (Parent.NeighborEmpty())
             {
                 Parent.SetNeighbor(CenterCode);
                 Parent.AddChild(this);
                 SplitMainPart();
-                return root;
             }
             else
             {
                 Parent.SetCenter(CenterCode);
                 SplitMainPart();
-                return Parent.SplitBranch(root);
+                Parent.SplitBranch(ref root);
             }
         }
 

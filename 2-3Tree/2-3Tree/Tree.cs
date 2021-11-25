@@ -4,7 +4,8 @@ namespace _2_3Tree
 {
     class Tree
     {
-        public Branch Root { get; set; }
+        Branch root; 
+        public Branch Root { get { return root; } private set { root = value; } }
 
         public bool Insert()
         {
@@ -32,7 +33,7 @@ namespace _2_3Tree
                 else
                 {
                     currentBranch.SetCenter(newCode);
-                    Root = currentBranch.SplitBranch(Root);
+                    currentBranch.SplitBranch(ref root);
                 }
             }
             return true;
@@ -445,15 +446,39 @@ namespace _2_3Tree
         }
         void AddNodeToTreeView(Branch currentBranch, out TreeNode nodeInside, TreeNodeCollection node)
         {
-            if (currentBranch.RightCode != null)
+            if (currentBranch.Parent != null)
             {
-                nodeInside = node.Add("<" + currentBranch.LeftCode.str + "><" + currentBranch.RightCode.str + ">");
+                if (currentBranch.Parent.ChildFirst == currentBranch)
+                {
+                    nodeInside = node.Add(BuildStrCode("L", currentBranch));
+                }
+                else if (currentBranch.Parent.ChildSecond == currentBranch && currentBranch.Parent.ChildThird == null || currentBranch.Parent.ChildThird == currentBranch)
+                {
+                    nodeInside = node.Add(BuildStrCode("R", currentBranch));
+                }
+                else
+                {
+                    nodeInside = node.Add(BuildStrCode("M", currentBranch));
+                }
             }
             else
             {
-                nodeInside = node.Add("<" + currentBranch.LeftCode.str + ">");
+                nodeInside = node.Add(BuildStrCode("", currentBranch));
             }
         }
+
+        string BuildStrCode(string type, Branch branch)
+        {
+            if(branch.RightCode==null)
+            {
+                return type + "<" + branch.LeftCode.str + ">";
+            }
+            else
+            {
+                return type + "<" + branch.LeftCode.str + "><" + branch.RightCode.str + ">";
+            }
+        }
+
         void TransitionToChild(Branch childBranch, TreeNode nodeInside)
         {
             if (childBranch != null)
