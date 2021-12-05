@@ -418,6 +418,54 @@ namespace _2_3Tree
             }
             return null;
         }
+
+        public Branch Search(Code code, Branch currentBranch,ref int countBranch,ref int s)
+        {
+            if (currentBranch != null)
+            {
+                s++;
+                countBranch++;
+                if (currentBranch.LeftCode == code || (currentBranch.RightCode != null && currentBranch.RightCode == code))
+                {
+                    return currentBranch;
+                }
+                else if (currentBranch.NeighborEmpty())
+                {
+                    s++;
+                    if (code < currentBranch.LeftCode)
+                    {
+                        s++;
+                        return Search(code, currentBranch.ChildFirst,ref countBranch, ref s);
+                    }
+                    else
+                    {
+                        s++;
+                        return Search(code, currentBranch.ChildSecond, ref countBranch, ref s);
+                    }
+                }
+                else
+                {
+                    s++;
+                    if (code < currentBranch.LeftCode)
+                    {
+                        s++;
+                        return Search(code, currentBranch.ChildFirst, ref countBranch, ref s);
+                    }
+                    else if (code >= currentBranch.LeftCode && code < currentBranch.RightCode)
+                    {
+                        s += 3;
+                        return Search(code, currentBranch.ChildSecond, ref countBranch, ref s);
+                    }
+                    else
+                    {
+                        s += 3;
+                        return Search(code, currentBranch.ChildThird, ref countBranch, ref s);
+                    }
+                }
+            }
+            return null;
+        }
+
         public void ShowTreeWithFoundBranch(TreeNodeCollection node, Branch foundBranch)
         {
             ShowBranch(node, Root, foundBranch);

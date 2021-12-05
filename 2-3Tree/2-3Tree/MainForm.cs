@@ -12,6 +12,8 @@ namespace _2_3Tree
             InitializeComponent();
             StatusBar.Text = "Программа инициализирована";
             tree = new Tree();
+            test();
+            //TreeDrawing();
         }
 
         void buttonAdd_Click(object sender, EventArgs e)
@@ -169,6 +171,25 @@ namespace _2_3Tree
             {
                 TreeDrawingWithFoundBranch();
             }
+        }
+
+        void test()
+        {
+            int count = 1000000;
+            for (int i = 1; i < count+1; i++)
+            {
+                tree.Insert(i.ToString());
+            }
+            int countBranch = 0, s = 0;
+            for (int i = 1; i < count + 1; i++)
+            {
+                if(tree.Search(new Code(i.ToString()), tree.Root, ref countBranch, ref s)==null)
+                {
+                    StatusBar.Text = "1";
+                    return;
+                }
+            }
+            StatusBar.Text = "Веток: " + countBranch + "Сравнений: " + s;
         }
     }
 }
