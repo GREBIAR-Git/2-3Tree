@@ -93,7 +93,7 @@ namespace _2_3Tree
             Branch removeBranch = Search(code);
             if (removeBranch != null)
             {
-                PreparingForDeletion(ref removeBranch, ref code);
+                Equivalent(ref removeBranch, ref code);
                 FixingTree(removeBranch, code);
                 return true;
             }
@@ -103,11 +103,11 @@ namespace _2_3Tree
             }
         }
 
-        void PreparingForDeletion(ref Branch removeBranch, ref string code)
+        void Equivalent(ref Branch removeBranch, ref string code)
         {
             if (!removeBranch.IsLeaf())
             {
-                Branch min = null;
+                Branch min;
                 if (removeBranch.LeftCode.str == code)
                 {
                     min = SearchMin(removeBranch.ChildSecond);
@@ -123,7 +123,7 @@ namespace _2_3Tree
             }
         }
 
-        public void FixingTree(Branch currentBranch, string code)
+        void FixingTree(Branch currentBranch, string code)
         {
             if (!currentBranch.NeighborEmpty())
             {
@@ -139,230 +139,235 @@ namespace _2_3Tree
             }
             else
             {
-                Merge(currentBranch);
+                Balancing(currentBranch);
             }
         }
 
-        public void Merge(Branch currentBranch)
+        void Balancing(Branch currentBranch)
         {
             if (currentBranch != null)
             {
-                Branch parent = currentBranch.Parent;
                 int numChild = currentBranch.WhichChildren();
                 if (numChild == 0)
                 {
-                    Root = currentBranch.ChildFirst;
-                    Root.Parent = null;
+                    Merge(currentBranch);
                     return;
                 }
-                else if (numChild == 1)
+                else
                 {
-                    if (!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty())
+                    if (Redistribute(currentBranch, numChild))
                     {
-                        Redistribute(currentBranch, numChild);
                         return;
                     }
-                    if (currentBranch.LeftCode == null)
-                    {
-                        currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                        if (currentBranch.Parent.ChildSecond != null)
-                        {
-                            currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
-                            if (currentBranch.Parent.ChildSecond.ChildFirst != null)
-                            {
-                                currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
-                                currentBranch.ChildSecond.Parent = currentBranch;
-                                if (currentBranch.Parent.ChildSecond.ChildSecond != null)
-                                {
-                                    currentBranch.ChildThird = currentBranch.Parent.ChildSecond.ChildSecond;
-                                    currentBranch.ChildThird.Parent = currentBranch;
-                                }
-                            }
-                            currentBranch.Parent.ChildSecond = null;
-                        }
-                        currentBranch.Parent.LeftCode = null;
-                    }
-                    else
-                    {
-                        currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                        currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
-                        currentBranch.Parent.ChildSecond = null;
-                        currentBranch.Parent.LeftCode = null;
-                    }
+                    Merge(numChild, currentBranch);
                 }
-                else if (numChild == 2)
-                {
-                    if (!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty())
-                    {
-                        Redistribute(currentBranch, numChild);
-                        return;
-                    }
-                    if (currentBranch.LeftCode == null)
-                    {
-                        currentBranch.Parent.ChildFirst.RightCode = currentBranch.Parent.LeftCode;
-                        if (currentBranch.ChildFirst != null)
-                        {
-                            currentBranch.Parent.ChildFirst.ChildThird = currentBranch.ChildFirst;
-                            currentBranch.Parent.ChildFirst.ChildThird.Parent = currentBranch.Parent.ChildFirst;
-                        }
-                        currentBranch.Parent.LeftCode = null;
-                        currentBranch.Parent.ChildSecond = null;
-                    }
-                    else
-                    {
-                        currentBranch.Parent.ChildFirst.RightCode = currentBranch.Parent.LeftCode;
-                        currentBranch.Parent.LeftCode = null;
-                        currentBranch.Parent.ChildSecond = null;
-                    }
-                }
-                else if (numChild == 3)
-                {
-                    if (!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty())
-                    {
-                        Redistribute(currentBranch, numChild);
-                        return;
-                    }
-                }
-                Merge(parent);
+                Balancing(currentBranch.Parent);
             }
         }
 
-        public void Redistribute(Branch currentBranch, int numChild)
+        void Merge(int numChild, Branch currentBranch)
         {
-            Code code = currentBranch.LeftCode;
             if (numChild == 1)
             {
-                if (!currentBranch.Parent.ChildSecond.NeighborEmpty())
+                if (currentBranch.LeftCode == null)
                 {
                     currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                    currentBranch.Parent.LeftCode = currentBranch.Parent.ChildSecond.LeftCode;
-                    currentBranch.Parent.ChildSecond.LeftCode = currentBranch.Parent.ChildSecond.RightCode;
-                    currentBranch.Parent.ChildSecond.RightCode = null;
-                    if (code == null)
+                    if (currentBranch.Parent.ChildSecond != null)
                     {
-                        currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
-                        currentBranch.ChildSecond.Parent = currentBranch;
-                        currentBranch.Parent.ChildSecond.ChildFirst = currentBranch.Parent.ChildSecond.ChildSecond;
-                        currentBranch.Parent.ChildSecond.ChildSecond = currentBranch.Parent.ChildSecond.ChildThird;
-                        currentBranch.Parent.ChildSecond.ChildThird = null;
+                        currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
+                        if (currentBranch.Parent.ChildSecond.ChildFirst != null)
+                        {
+                            currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
+                            currentBranch.ChildSecond.Parent = currentBranch;
+                            if (currentBranch.Parent.ChildSecond.ChildSecond != null)
+                            {
+                                currentBranch.ChildThird = currentBranch.Parent.ChildSecond.ChildSecond;
+                                currentBranch.ChildThird.Parent = currentBranch;
+                            }
+                        }
+                        currentBranch.Parent.ChildSecond = null;
                     }
+                    currentBranch.Parent.LeftCode = null;
                 }
-                else if (!currentBranch.Parent.NeighborEmpty())
+                else
                 {
-                    if (currentBranch.Parent.ChildThird.NeighborEmpty())
-                    {
-                        currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                        currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
-                        currentBranch.Parent.LeftCode = currentBranch.Parent.RightCode;
-                        currentBranch.Parent.RightCode = null;
-                        if (code == null)
-                        {
-                            currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
-                            currentBranch.ChildSecond.Parent = currentBranch;
-                            currentBranch.ChildThird = currentBranch.Parent.ChildSecond.ChildSecond;
-                            currentBranch.ChildThird.Parent = currentBranch;
-                        }
-                        currentBranch.Parent.ChildSecond = currentBranch.Parent.ChildThird;
-                        currentBranch.Parent.ChildThird = null;
-                    }
-                    else
-                    {
-                        currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                        currentBranch.Parent.LeftCode = currentBranch.Parent.RightCode;
-                        currentBranch.Parent.RightCode = null;
-                        currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
-                        if (code == null)
-                        {
-                            currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
-                            currentBranch.ChildSecond.Parent = currentBranch;
-                            currentBranch.ChildThird = currentBranch.Parent.ChildSecond.ChildSecond;
-                            currentBranch.ChildThird.Parent = currentBranch;
-                        }
-                        currentBranch.Parent.ChildSecond = currentBranch.Parent.ChildThird;
-                        currentBranch.Parent.ChildThird = null;
-                    }
+                    currentBranch.LeftCode = currentBranch.Parent.LeftCode;
+                    currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
+                    currentBranch.Parent.ChildSecond = null;
+                    currentBranch.Parent.LeftCode = null;
                 }
             }
             else if (numChild == 2)
             {
-                if (!currentBranch.Parent.ChildFirst.NeighborEmpty())
+                if (currentBranch.LeftCode == null)
                 {
-                    Branch first = currentBranch.Parent.ChildFirst;
-                    currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                    currentBranch.Parent.LeftCode = currentBranch.Parent.ChildFirst.RightCode;
-                    currentBranch.Parent.ChildFirst.RightCode = null;
-                    if (code == null)
+                    currentBranch.Parent.ChildFirst.RightCode = currentBranch.Parent.LeftCode;
+                    if (currentBranch.ChildFirst != null)
                     {
-                        currentBranch.ChildSecond = currentBranch.ChildFirst;
-                        currentBranch.ChildFirst = first.ChildThird;
-                        currentBranch.ChildFirst.Parent = currentBranch;
-                        first.ChildThird = null;
+                        currentBranch.Parent.ChildFirst.ChildThird = currentBranch.ChildFirst;
+                        currentBranch.Parent.ChildFirst.ChildThird.Parent = currentBranch.Parent.ChildFirst;
                     }
-                }
-                else if (!currentBranch.Parent.NeighborEmpty())
-                {
-                    if (currentBranch.Parent.ChildThird.NeighborEmpty())
-                    {
-                        Branch first = currentBranch.Parent.ChildFirst;
-                        first.RightCode = currentBranch.Parent.LeftCode;
-                        currentBranch.Parent.LeftCode = currentBranch.Parent.RightCode;
-                        currentBranch.Parent.RightCode = null;
-                        if (code == null)
-                        {
-                            first.ChildThird = currentBranch.ChildFirst;
-                            first.ChildThird.Parent = first;
-                        }
-                        currentBranch.Parent.ChildSecond = currentBranch.Parent.ChildThird;
-                        currentBranch.Parent.ChildThird = null;
-                    }
-                    else
-                    {
-                        Branch third = currentBranch.Parent.ChildThird;
-                        currentBranch.LeftCode = currentBranch.Parent.RightCode;
-                        currentBranch.Parent.RightCode = currentBranch.Parent.ChildThird.LeftCode;
-                        currentBranch.Parent.ChildThird.LeftCode = currentBranch.Parent.ChildThird.RightCode;
-                        currentBranch.Parent.ChildThird.RightCode = null;
-                        if (code == null)
-                        {
-                            currentBranch.ChildSecond = third.ChildFirst;
-                            currentBranch.ChildSecond.Parent = currentBranch;
-                            third.ChildFirst = third.ChildSecond;
-                            third.ChildSecond = third.ChildThird;
-                            third.ChildThird = null;
-                        }
-                    }
-                }
-            }
-            else if (numChild == 3)
-            {
-                if (!currentBranch.Parent.ChildSecond.NeighborEmpty())
-                {
-                    currentBranch.LeftCode = currentBranch.Parent.RightCode;
-                    currentBranch.Parent.RightCode = currentBranch.Parent.ChildSecond.RightCode;
-                    currentBranch.Parent.ChildSecond.RightCode = null;
-                    if (code == null)
-                    {
-                        currentBranch.ChildSecond = currentBranch.ChildFirst;
-                        currentBranch.ChildFirst = currentBranch.Parent.ChildSecond.ChildThird;
-                        currentBranch.ChildFirst.Parent = currentBranch;
-                        currentBranch.Parent.ChildSecond.ChildThird = null;
-                    }
+                    currentBranch.Parent.LeftCode = null;
+                    currentBranch.Parent.ChildSecond = null;
                 }
                 else
                 {
-                    currentBranch.Parent.ChildSecond.RightCode = currentBranch.Parent.RightCode;
-                    currentBranch.Parent.RightCode = null;
-                    if (code == null)
-                    {
-                        currentBranch.Parent.ChildSecond.ChildThird = currentBranch.ChildFirst;
-                        currentBranch.Parent.ChildSecond.ChildThird.Parent = currentBranch.Parent.ChildSecond;
-                    }
-                    currentBranch.Parent.ChildThird = null;
+                    currentBranch.Parent.ChildFirst.RightCode = currentBranch.Parent.LeftCode;
+                    currentBranch.Parent.LeftCode = null;
+                    currentBranch.Parent.ChildSecond = null;
                 }
             }
         }
 
-        public Branch SearchMin(Branch currentBranch)
+        void Merge(Branch currentBranch)
+        {
+            Root = currentBranch.ChildFirst;
+            Root.Parent = null;
+        }
+
+
+        bool Redistribute(Branch currentBranch, int numChild)
+        {
+            Branch parent = currentBranch.Parent;
+            if (!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty())
+            {
+                Code code = currentBranch.LeftCode;
+                if (numChild == 1)
+                {
+                    if (!currentBranch.Parent.ChildSecond.NeighborEmpty())
+                    {
+                        currentBranch.LeftCode = currentBranch.Parent.LeftCode;
+                        currentBranch.Parent.LeftCode = currentBranch.Parent.ChildSecond.LeftCode;
+                        currentBranch.Parent.ChildSecond.LeftCode = currentBranch.Parent.ChildSecond.RightCode;
+                        currentBranch.Parent.ChildSecond.RightCode = null;
+                        if (code == null)
+                        {
+                            currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
+                            currentBranch.ChildSecond.Parent = currentBranch;
+                            currentBranch.Parent.ChildSecond.ChildFirst = currentBranch.Parent.ChildSecond.ChildSecond;
+                            currentBranch.Parent.ChildSecond.ChildSecond = currentBranch.Parent.ChildSecond.ChildThird;
+                            currentBranch.Parent.ChildSecond.ChildThird = null;
+                        }
+                    }
+                    else if (!currentBranch.Parent.NeighborEmpty())
+                    {
+                        if (currentBranch.Parent.ChildThird.NeighborEmpty())
+                        {
+                            currentBranch.LeftCode = currentBranch.Parent.LeftCode;
+                            currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
+                            currentBranch.Parent.LeftCode = currentBranch.Parent.RightCode;
+                            currentBranch.Parent.RightCode = null;
+                            if (code == null)
+                            {
+                                currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
+                                currentBranch.ChildSecond.Parent = currentBranch;
+                                currentBranch.ChildThird = currentBranch.Parent.ChildSecond.ChildSecond;
+                                currentBranch.ChildThird.Parent = currentBranch;
+                            }
+                            currentBranch.Parent.ChildSecond = currentBranch.Parent.ChildThird;
+                            currentBranch.Parent.ChildThird = null;
+                        }
+                        else
+                        {
+                            currentBranch.LeftCode = currentBranch.Parent.LeftCode;
+                            currentBranch.Parent.LeftCode = currentBranch.Parent.RightCode;
+                            currentBranch.Parent.RightCode = null;
+                            currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
+                            if (code == null)
+                            {
+                                currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
+                                currentBranch.ChildSecond.Parent = currentBranch;
+                                currentBranch.ChildThird = currentBranch.Parent.ChildSecond.ChildSecond;
+                                currentBranch.ChildThird.Parent = currentBranch;
+                            }
+                            currentBranch.Parent.ChildSecond = currentBranch.Parent.ChildThird;
+                            currentBranch.Parent.ChildThird = null;
+                        }
+                    }
+                }
+                else if (numChild == 2)
+                {
+                    if (!currentBranch.Parent.ChildFirst.NeighborEmpty())
+                    {
+                        Branch first = currentBranch.Parent.ChildFirst;
+                        currentBranch.LeftCode = currentBranch.Parent.LeftCode;
+                        currentBranch.Parent.LeftCode = currentBranch.Parent.ChildFirst.RightCode;
+                        currentBranch.Parent.ChildFirst.RightCode = null;
+                        if (code == null)
+                        {
+                            currentBranch.ChildSecond = currentBranch.ChildFirst;
+                            currentBranch.ChildFirst = first.ChildThird;
+                            currentBranch.ChildFirst.Parent = currentBranch;
+                            first.ChildThird = null;
+                        }
+                    }
+                    else if (!currentBranch.Parent.NeighborEmpty())
+                    {
+                        if (currentBranch.Parent.ChildThird.NeighborEmpty())
+                        {
+                            Branch first = currentBranch.Parent.ChildFirst;
+                            first.RightCode = currentBranch.Parent.LeftCode;
+                            currentBranch.Parent.LeftCode = currentBranch.Parent.RightCode;
+                            currentBranch.Parent.RightCode = null;
+                            if (code == null)
+                            {
+                                first.ChildThird = currentBranch.ChildFirst;
+                                first.ChildThird.Parent = first;
+                            }
+                            currentBranch.Parent.ChildSecond = currentBranch.Parent.ChildThird;
+                            currentBranch.Parent.ChildThird = null;
+                        }
+                        else
+                        {
+                            Branch third = currentBranch.Parent.ChildThird;
+                            currentBranch.LeftCode = currentBranch.Parent.RightCode;
+                            currentBranch.Parent.RightCode = currentBranch.Parent.ChildThird.LeftCode;
+                            currentBranch.Parent.ChildThird.LeftCode = currentBranch.Parent.ChildThird.RightCode;
+                            currentBranch.Parent.ChildThird.RightCode = null;
+                            if (code == null)
+                            {
+                                currentBranch.ChildSecond = third.ChildFirst;
+                                currentBranch.ChildSecond.Parent = currentBranch;
+                                third.ChildFirst = third.ChildSecond;
+                                third.ChildSecond = third.ChildThird;
+                                third.ChildThird = null;
+                            }
+                        }
+                    }
+                }
+                else if (numChild == 3)
+                {
+                    if (!currentBranch.Parent.ChildSecond.NeighborEmpty())
+                    {
+                        currentBranch.LeftCode = currentBranch.Parent.RightCode;
+                        currentBranch.Parent.RightCode = currentBranch.Parent.ChildSecond.RightCode;
+                        currentBranch.Parent.ChildSecond.RightCode = null;
+                        if (code == null)
+                        {
+                            currentBranch.ChildSecond = currentBranch.ChildFirst;
+                            currentBranch.ChildFirst = currentBranch.Parent.ChildSecond.ChildThird;
+                            currentBranch.ChildFirst.Parent = currentBranch;
+                            currentBranch.Parent.ChildSecond.ChildThird = null;
+                        }
+                    }
+                    else
+                    {
+                        currentBranch.Parent.ChildSecond.RightCode = currentBranch.Parent.RightCode;
+                        currentBranch.Parent.RightCode = null;
+                        if (code == null)
+                        {
+                            currentBranch.Parent.ChildSecond.ChildThird = currentBranch.ChildFirst;
+                            currentBranch.Parent.ChildSecond.ChildThird.Parent = currentBranch.Parent.ChildSecond;
+                        }
+                        currentBranch.Parent.ChildThird = null;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        Branch SearchMin(Branch currentBranch)
         {
             if (currentBranch == null)
             {

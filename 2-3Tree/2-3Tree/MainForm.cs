@@ -13,7 +13,7 @@ namespace _2_3Tree
             StatusBar.Text = "Программа инициализирована";
             tree = new Tree();
             test();
-            //TreeDrawing();
+            TreeDrawing();
         }
 
         void buttonAdd_Click(object sender, EventArgs e)
@@ -175,7 +175,7 @@ namespace _2_3Tree
 
         void test()
         {
-            int count = 1000000;
+            int count = 10;
             for (int i = 1; i < count+1; i++)
             {
                 tree.Insert(i.ToString());
