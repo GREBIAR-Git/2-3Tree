@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace _2_3Tree
@@ -12,8 +13,62 @@ namespace _2_3Tree
             InitializeComponent();
             StatusBar.Text = "Программа инициализирована";
             tree = new Tree();
-            test();
-            TreeDrawing();
+            //timeTest();
+            //sizeTest();
+        }
+
+        void timeTest()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            for (int f = 1; f < 4000; f++)
+            {
+                testInsert(f);
+                stopwatch.Start();
+                testSearch(f);
+                stopwatch.Stop();
+                tree = new Tree();
+                File.AppendAllText("time.txt", stopwatch.Elapsed.TotalMilliseconds*1000000 + Environment.NewLine);
+                stopwatch.Reset();
+            }
+        }
+
+        void sizeTest()
+        {
+            int r = 0;
+            for (int f = 1; f < 4000; f++)
+            {
+                testInsert(f);
+                r += testSearchS(f);
+                tree = new Tree();
+                File.AppendAllText("size.txt", r + Environment.NewLine);
+                r = 0;
+            }
+        }
+
+        void testInsert(int count)
+        {
+            for (int i = 1; i < count + 1; i++)
+            {
+                tree.Insert(i.ToString());
+            }
+        }
+
+        int testSearchS(int count)
+        {
+            int countBranch = 0,s=0;
+            for (int i = 1; i < count + 1; i++)
+            {
+                tree.Search(new Code(i.ToString()),tree.Root, ref countBranch,ref s);
+            }
+            return countBranch;
+        }
+
+        void testSearch(int count)
+        {
+            for (int i = 1; i < count + 1; i++)
+            {
+                tree.Search(new Code(i.ToString()), tree.Root);
+            }
         }
 
         void buttonAdd_Click(object sender, EventArgs e)
@@ -171,25 +226,6 @@ namespace _2_3Tree
             {
                 TreeDrawingWithFoundBranch();
             }
-        }
-
-        void test()
-        {
-            int count = 10;
-            for (int i = 1; i < count+1; i++)
-            {
-                tree.Insert(i.ToString());
-            }
-            int countBranch = 0, s = 0;
-            for (int i = 1; i < count + 1; i++)
-            {
-                if(tree.Search(new Code(i.ToString()), tree.Root, ref countBranch, ref s)==null)
-                {
-                    StatusBar.Text = "1";
-                    return;
-                }
-            }
-            StatusBar.Text = "Веток: " + countBranch + "Сравнений: " + s;
         }
     }
 }
