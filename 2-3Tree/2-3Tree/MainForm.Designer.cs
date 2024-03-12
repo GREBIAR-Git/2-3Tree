@@ -116,7 +116,7 @@ namespace _2_3Tree
             this.buttonClear.TabIndex = 5;
             this.buttonClear.Text = "Очистить";
             this.buttonClear.UseVisualStyleBackColor = true;
-            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
+            this.buttonClear.Click += new System.EventHandler(this.ButtonClear_Click);
             // 
             // labelSearch
             // 
@@ -139,9 +139,9 @@ namespace _2_3Tree
             this.textBoxSearch.Name = "textBoxSearch";
             this.textBoxSearch.Size = new System.Drawing.Size(280, 29);
             this.textBoxSearch.TabIndex = 0;
-            this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
-            this.textBoxSearch.Enter += new System.EventHandler(this.textBoxSearch_Enter);
-            this.textBoxSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxSearch_KeyDown);
+            this.textBoxSearch.TextChanged += new System.EventHandler(this.TextBoxSearch_TextChanged);
+            this.textBoxSearch.Enter += new System.EventHandler(this.TextBoxSearch_Enter);
+            this.textBoxSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxSearch_KeyDown);
             // 
             // buttonAdd
             // 
@@ -153,7 +153,7 @@ namespace _2_3Tree
             this.buttonAdd.TabIndex = 2;
             this.buttonAdd.Text = "Добавить";
             this.buttonAdd.UseVisualStyleBackColor = true;
-            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+            this.buttonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
             // 
             // buttonDel
             // 
@@ -164,7 +164,7 @@ namespace _2_3Tree
             this.buttonDel.TabIndex = 4;
             this.buttonDel.Text = "Удалить";
             this.buttonDel.UseVisualStyleBackColor = true;
-            this.buttonDel.Click += new System.EventHandler(this.buttonDel_Click);
+            this.buttonDel.Click += new System.EventHandler(this.ButtonDel_Click);
             // 
             // textBoxDel
             // 
@@ -174,8 +174,8 @@ namespace _2_3Tree
             this.textBoxDel.Name = "textBoxDel";
             this.textBoxDel.Size = new System.Drawing.Size(140, 29);
             this.textBoxDel.TabIndex = 3;
-            this.textBoxDel.TextChanged += new System.EventHandler(this.textBox_TextChanged);
-            this.textBoxDel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxDel_KeyDown);
+            this.textBoxDel.TextChanged += new System.EventHandler(this.TextBox_TextChanged);
+            this.textBoxDel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxDel_KeyDown);
             // 
             // textBoxAdd
             // 
@@ -185,8 +185,8 @@ namespace _2_3Tree
             this.textBoxAdd.Name = "textBoxAdd";
             this.textBoxAdd.Size = new System.Drawing.Size(140, 29);
             this.textBoxAdd.TabIndex = 1;
-            this.textBoxAdd.TextChanged += new System.EventHandler(this.textBox_TextChanged);
-            this.textBoxAdd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxAdd_KeyDown);
+            this.textBoxAdd.TextChanged += new System.EventHandler(this.TextBox_TextChanged);
+            this.textBoxAdd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxAdd_KeyDown);
             // 
             // buttonRandom
             // 
@@ -199,7 +199,7 @@ namespace _2_3Tree
             this.buttonRandom.TabIndex = 6;
             this.buttonRandom.Text = "Добавить 10 случайных значений";
             this.buttonRandom.UseVisualStyleBackColor = true;
-            this.buttonRandom.Click += new System.EventHandler(this.buttonRandom_Click);
+            this.buttonRandom.Click += new System.EventHandler(this.ButtonRandom_Click);
             // 
             // statusStrip
             // 

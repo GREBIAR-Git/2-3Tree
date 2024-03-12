@@ -4,16 +4,18 @@ namespace _2_3Tree
 {
     public partial class MainForm
     {
-        public void TreeDrawing()
+        void TreeDrawing()
         {
             treeBox.Nodes.Clear();
             if (tree.Root != null)
             {
                 tree.ShowTree(treeBox.Nodes);
             }
+
             treeBox.ExpandAll();
         }
-        public void TreeDrawingWithFoundBranch()
+
+        void TreeDrawingWithFoundBranch()
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -21,20 +23,22 @@ namespace _2_3Tree
             stopwatch.Stop();
             if (foundBranch != null)
             {
-                StatusBar.Text = "Ключ: " + textBoxSearch.Text + " - найден; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
+                StatusBar.Text = @"Ключ: " + textBoxSearch.Text + @" - найден; Время: " +
+                                 stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс";
                 treeBox.Nodes.Clear();
                 if (tree.Root != null)
                 {
                     tree.ShowTreeWithFoundBranch(treeBox.Nodes, foundBranch);
                 }
+
                 treeBox.ExpandAll();
             }
             else
             {
-                StatusBar.Text = "Ключ: " + textBoxSearch.Text + " - не найден; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
+                StatusBar.Text = @"Ключ: " + textBoxSearch.Text + @" - не найден; Время: " +
+                                 stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс";
                 TreeDrawing();
             }
         }
-
     }
 }

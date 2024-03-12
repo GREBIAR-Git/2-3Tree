@@ -8,44 +8,45 @@ namespace _2_3Tree
     public partial class MainForm : Form
     {
         Tree tree;
+
         public MainForm()
         {
             InitializeComponent();
-            StatusBar.Text = "Программа инициализирована";
+            StatusBar.Text = @"Программа инициализирована";
             tree = new Tree();
             //timeTest();
             //sizeTest();
         }
 
-        void timeTest()
+        void TimeTest()
         {
             Stopwatch stopwatch = new Stopwatch();
             for (int f = 1; f < 4000; f++)
             {
-                testInsert(f);
+                TestInsert(f);
                 stopwatch.Start();
-                testSearch(f);
+                TestSearch(f);
                 stopwatch.Stop();
                 tree = new Tree();
-                File.AppendAllText("time.txt", stopwatch.Elapsed.TotalMilliseconds*1000000 + Environment.NewLine);
+                File.AppendAllText("time.txt", stopwatch.Elapsed.TotalMilliseconds * 1000000 + Environment.NewLine);
                 stopwatch.Reset();
             }
         }
 
-        void sizeTest()
+        void SizeTest()
         {
             int r = 0;
             for (int f = 1; f < 4000; f++)
             {
-                testInsert(f);
-                r += testSearchS(f);
+                TestInsert(f);
+                r += TestSearchS(f);
                 tree = new Tree();
                 File.AppendAllText("size.txt", r + Environment.NewLine);
                 r = 0;
             }
         }
 
-        void testInsert(int count)
+        void TestInsert(int count)
         {
             for (int i = 1; i < count + 1; i++)
             {
@@ -53,25 +54,26 @@ namespace _2_3Tree
             }
         }
 
-        int testSearchS(int count)
+        int TestSearchS(int count)
         {
-            int countBranch = 0,s=0;
+            int countBranch = 0, s = 0;
             for (int i = 1; i < count + 1; i++)
             {
-                tree.Search(new Code(i.ToString()),tree.Root, ref countBranch,ref s);
+                tree.Search(new Key(i.ToString()), tree.Root, ref countBranch, ref s);
             }
+
             return countBranch;
         }
 
-        void testSearch(int count)
+        void TestSearch(int count)
         {
             for (int i = 1; i < count + 1; i++)
             {
-                tree.Search(new Code(i.ToString()), tree.Root);
+                tree.Search(new Key(i.ToString()), tree.Root);
             }
         }
 
-        void buttonAdd_Click(object sender, EventArgs e)
+        void ButtonAdd_Click(object sender, EventArgs e)
         {
             if (textBoxAdd.Text != "")
             {
@@ -80,26 +82,28 @@ namespace _2_3Tree
                 if (tree.Insert(textBoxAdd.Text))
                 {
                     stopwatch.Stop();
-                    StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - успешно добавлен; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
+                    StatusBar.Text = @"Ключ: " + textBoxAdd.Text + @" - успешно добавлен; Время: " +
+                                     stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс";
                     TreeDrawing();
                 }
                 else
                 {
                     stopwatch.Stop();
-                    StatusBar.Text = "Ключ: " + textBoxAdd.Text + " - уже существует; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
+                    StatusBar.Text = @"Ключ: " + textBoxAdd.Text + @" - уже существует; Время: " +
+                                     stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс";
                 }
             }
             else
             {
-                StatusBar.Text = "Поле с ключом пустое";
+                StatusBar.Text = @"Поле с ключом пустое";
             }
         }
 
-        void textBoxAdd_KeyDown(object sender, KeyEventArgs e)
+        void TextBoxAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                buttonAdd_Click(sender, e);
+                ButtonAdd_Click(sender, e);
                 e.SuppressKeyPress = true;
             }
             else if (e.KeyCode == Keys.Up)
@@ -112,7 +116,7 @@ namespace _2_3Tree
             }
         }
 
-        void buttonDel_Click(object sender, EventArgs e)
+        void ButtonDel_Click(object sender, EventArgs e)
         {
             if (textBoxDel.Text != "")
             {
@@ -121,26 +125,28 @@ namespace _2_3Tree
                 if (tree.Remove(textBoxDel.Text))
                 {
                     stopwatch.Stop();
-                    StatusBar.Text = "Ключ: " + textBoxDel.Text + " - удалён; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
+                    StatusBar.Text = @"Ключ: " + textBoxDel.Text + @" - удалён; Время: " +
+                                     stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс";
                     TreeDrawing();
                 }
                 else
                 {
                     stopwatch.Stop();
-                    StatusBar.Text = "Ключ: " + textBoxDel.Text + " - не существует; Время: " + stopwatch.Elapsed.TotalMilliseconds * 1000000 + " нс";
+                    StatusBar.Text = @"Ключ: " + textBoxDel.Text + @" - не существует; Время: " +
+                                     stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс";
                 }
             }
             else
             {
-                StatusBar.Text = "Поле с ключом пустое";
+                StatusBar.Text = @"Поле с ключом пустое";
             }
         }
 
-        void textBoxDel_KeyDown(object sender, KeyEventArgs e)
+        void TextBoxDel_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                buttonDel_Click(sender, e);
+                ButtonDel_Click(sender, e);
                 e.SuppressKeyPress = true;
             }
             else if (e.KeyCode == Keys.Up)
@@ -153,14 +159,14 @@ namespace _2_3Tree
             }
         }
 
-        void textBox_TextChanged(object sender, EventArgs e)
+        void TextBox_TextChanged(object sender, EventArgs e)
         {
             RemoveSpecialSymbols(sender);
         }
 
-        void textBoxSearch_TextChanged(object sender, EventArgs e)
+        void TextBoxSearch_TextChanged(object sender, EventArgs e)
         {
-            if (textBoxSearch.Text != String.Empty)
+            if (textBoxSearch.Text != string.Empty)
             {
                 TreeDrawingWithFoundBranch();
             }
@@ -170,7 +176,7 @@ namespace _2_3Tree
             }
         }
 
-        void textBoxSearch_KeyDown(object sender, KeyEventArgs e)
+        void TextBoxSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -195,17 +201,17 @@ namespace _2_3Tree
             textBox.SelectionStart = cursor;
         }
 
-        void buttonClear_Click(object sender, EventArgs e)
+        void ButtonClear_Click(object sender, EventArgs e)
         {
             tree = new Tree();
             textBoxAdd.Text = string.Empty;
             textBoxDel.Text = string.Empty;
             textBoxSearch.Text = string.Empty;
-            StatusBar.Text = "Дерево полностью удалено";
+            StatusBar.Text = @"Дерево полностью удалено";
             TreeDrawing();
         }
 
-        void buttonRandom_Click(object sender, EventArgs e)
+        void ButtonRandom_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < 10; i++)
             {
@@ -214,15 +220,16 @@ namespace _2_3Tree
                     i--;
                 }
             }
+
             treeBox.SuspendLayout();
             TreeDrawing();
             treeBox.ResumeLayout();
-            StatusBar.Text = "К дереву добавлено 10 ключей";
+            StatusBar.Text = @"К дереву добавлено 10 ключей";
         }
 
-        void textBoxSearch_Enter(object sender, EventArgs e)
+        void TextBoxSearch_Enter(object sender, EventArgs e)
         {
-            if(textBoxSearch.Text != String.Empty)
+            if (textBoxSearch.Text != string.Empty)
             {
                 TreeDrawingWithFoundBranch();
             }

@@ -1,10 +1,20 @@
 ﻿namespace _2_3Tree
 {
-    class Branch
+    public class Branch
     {
-        public Code LeftCode { get; set; }
-        Code CenterCode { get; set; }
-        public Code RightCode { get; set; }
+        public Branch(string code)
+        {
+            LeftKey = new Key(code);
+        }
+
+        public Branch(Key key)
+        {
+            LeftKey = key;
+        }
+
+        public Key LeftKey { get; set; }
+        Key CenterKey { get; set; }
+        public Key RightKey { get; set; }
 
         public Branch ChildFirst { get; set; }
         public Branch ChildSecond { get; set; }
@@ -19,46 +29,52 @@
             {
                 return true;
             }
+
             return false;
         }
+
         public bool NeighborEmpty()
         {
-            if (RightCode == null)
+            if (RightKey == null)
             {
                 return true;
             }
+
             return false;
         }
-        public void SetNeighbor(Code code)
+
+        public void SetNeighbor(Key key)
         {
-            if (LeftCode <= code)
+            if (LeftKey <= key)
             {
-                RightCode = code;
+                RightKey = key;
             }
             else
             {
-                RightCode = LeftCode;
-                LeftCode = code;
+                RightKey = LeftKey;
+                LeftKey = key;
             }
         }
-        public void SetCenter(Code code)
+
+        public void SetCenter(Key key)
         {
-            if (LeftCode >= code)
+            if (LeftKey >= key)
             {
-                CenterCode = LeftCode;
-                LeftCode = code;
+                CenterKey = LeftKey;
+                LeftKey = key;
             }
-            else if (RightCode >= code)
+            else if (RightKey >= key)
             {
-                CenterCode = code;
+                CenterKey = key;
             }
             else
             {
-                CenterCode = RightCode;
-                RightCode = code;
+                CenterKey = RightKey;
+                RightKey = key;
             }
         }
-        public void AddChild(Branch branch)
+
+        void AddChild(Branch branch)
         {
             if (ChildFirst != branch && ChildSecond != branch && ChildThird != branch)
             {
@@ -69,7 +85,7 @@
                 }
                 else if (ChildSecond == null)
                 {
-                    if (ChildFirst.LeftCode < branch.LeftCode)
+                    if (ChildFirst.LeftKey < branch.LeftKey)
                     {
                         ChildSecond = branch;
                         SetParent(ChildSecond);
@@ -84,7 +100,7 @@
                 }
                 else if (ChildThird == null)
                 {
-                    if (ChildFirst.LeftCode > branch.LeftCode)
+                    if (ChildFirst.LeftKey > branch.LeftKey)
                     {
                         ChildThird = ChildSecond;
                         SetParent(ChildThird);
@@ -93,7 +109,7 @@
                         ChildFirst = branch;
                         SetParent(ChildFirst);
                     }
-                    else if (ChildSecond.LeftCode > branch.LeftCode)
+                    else if (ChildSecond.LeftKey > branch.LeftKey)
                     {
                         ChildThird = ChildSecond;
                         SetParent(ChildThird);
@@ -106,9 +122,9 @@
                         SetParent(ChildThird);
                     }
                 }
-                else if (ChildExtra == null && CenterCode != null)
+                else if (ChildExtra == null && CenterKey != null)
                 {
-                    if (ChildFirst.LeftCode > branch.LeftCode)
+                    if (ChildFirst.LeftKey > branch.LeftKey)
                     {
                         ChildExtra = ChildThird;
                         SetParent(ChildExtra);
@@ -119,7 +135,7 @@
                         ChildFirst = branch;
                         SetParent(ChildFirst);
                     }
-                    else if (ChildSecond.LeftCode > branch.LeftCode)
+                    else if (ChildSecond.LeftKey > branch.LeftKey)
                     {
                         ChildExtra = ChildThird;
                         SetParent(ChildExtra);
@@ -128,7 +144,7 @@
                         ChildSecond = branch;
                         SetParent(ChildSecond);
                     }
-                    else if (ChildThird.LeftCode > branch.LeftCode)
+                    else if (ChildThird.LeftKey > branch.LeftKey)
                     {
                         ChildExtra = ChildThird;
                         SetParent(ChildExtra);
@@ -150,45 +166,48 @@
             {
                 return 0;
             }
-            else if (Parent.ChildFirst == this)
+
+            if (Parent.ChildFirst == this)
             {
                 return 1;
             }
-            else if (Parent.ChildSecond == this)
+
+            if (Parent.ChildSecond == this)
             {
                 return 2;
             }
-            else if (Parent.ChildThird == this)
+
+            if (Parent.ChildThird == this)
             {
                 return 3;
             }
-            else
-            {
-                return 0;
-            }
+
+            return 0;
         }
+
         void SetParent(Branch branch)
         {
             branch.Parent = this;
         }
+
         public void SplitBranch(ref Branch root)
         {
             if (Parent == null)
             {
-                Parent = new Branch(CenterCode);
+                Parent = new Branch(CenterKey);
                 Parent.AddChild(this);
                 SplitMainPart();
                 root = Parent;
             }
             else if (Parent.NeighborEmpty())
             {
-                Parent.SetNeighbor(CenterCode);
+                Parent.SetNeighbor(CenterKey);
                 Parent.AddChild(this);
                 SplitMainPart();
             }
             else
             {
-                Parent.SetCenter(CenterCode);
+                Parent.SetCenter(CenterKey);
                 SplitMainPart();
                 Parent.SplitBranch(ref root);
             }
@@ -196,10 +215,10 @@
 
         void SplitMainPart()
         {
-            CenterCode = null;
-            Branch b1 = new Branch(RightCode);
+            CenterKey = null;
+            Branch b1 = new Branch(RightKey);
             Parent.AddChild(b1);
-            RightCode = null;
+            RightKey = null;
             if (ChildExtra != null)
             {
                 b1.AddChild(ChildThird);
@@ -207,15 +226,6 @@
                 b1.AddChild(ChildExtra);
                 ChildExtra = null;
             }
-        }
-
-        public Branch(string code)
-        {
-            this.LeftCode = new Code(code);
-        }
-        public Branch(Code code)
-        {
-            this.LeftCode = code;
         }
     }
 }

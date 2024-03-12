@@ -1,11 +1,36 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace _2_3Tree
 {
-    class Tree
+    public class Tree
     {
-        Branch root; 
-        public Branch Root { get { return root; } private set { root = value; } }
+        Branch root;
+
+        public Tree()
+        {
+            Root = null;
+        }
+
+
+        public Tree(Branch root)
+        {
+            Root = root;
+        }
+
+        public Branch Root
+        {
+            get => root;
+            private set => root = value;
+        }
+
+        public new string ToString => ToStringType(root);
+
+
+        public void Clear()
+        {
+            root = null;
+        }
 
         public bool Insert()
         {
@@ -14,80 +39,83 @@ namespace _2_3Tree
 
         public bool Insert(string code)
         {
-            Code newCode = new Code(code);
+            Key newKey = new Key(code);
             if (Root == null)
             {
-                Root = new Branch(newCode);
+                Root = new Branch(newKey);
             }
             else
             {
-                Branch currentBranch = SearchInsertionPoint(Root, newCode);
+                Branch currentBranch = SearchInsertionPoint(Root, newKey);
                 if (currentBranch == null)
                 {
                     return false;
                 }
-                else if (currentBranch.NeighborEmpty())
+
+                if (currentBranch.NeighborEmpty())
                 {
-                    currentBranch.SetNeighbor(newCode);
+                    currentBranch.SetNeighbor(newKey);
                 }
                 else
                 {
-                    currentBranch.SetCenter(newCode);
+                    currentBranch.SetCenter(newKey);
                     currentBranch.SplitBranch(ref root);
                 }
             }
+
             return true;
         }
 
-        Branch SearchInsertionPoint(Branch branch, Code code)
+        Branch SearchInsertionPoint(Branch branch, Key key)
         {
             if (branch.IsLeaf())
             {
-                if (code == branch.LeftCode || code == branch.RightCode)
+                if (key == branch.LeftKey || key == branch.RightKey)
                 {
                     return null;
                 }
+
                 return branch;
             }
-            else if (branch.NeighborEmpty())
+
+            if (branch.NeighborEmpty())
             {
-                if (code < branch.LeftCode)
+                if (key < branch.LeftKey)
                 {
-                    return SearchInsertionPoint(branch.ChildFirst, code);
+                    return SearchInsertionPoint(branch.ChildFirst, key);
                 }
-                else if (code == branch.LeftCode)
+
+                if (key == branch.LeftKey)
                 {
                     return null;
                 }
-                else
-                {
-                    return SearchInsertionPoint(branch.ChildSecond, code);
-                }
+
+                return SearchInsertionPoint(branch.ChildSecond, key);
             }
-            else
+
+            if (key < branch.LeftKey)
             {
-                if (code < branch.LeftCode)
-                {
-                    return SearchInsertionPoint(branch.ChildFirst, code);
-                }
-                else if (code == branch.LeftCode)
-                {
-                    return null;
-                }
-                else if (code > branch.LeftCode && code < branch.RightCode)
-                {
-                    return SearchInsertionPoint(branch.ChildSecond, code);
-                }
-                else if (code == branch.RightCode)
-                {
-                    return null;
-                }
-                else
-                {
-                    return SearchInsertionPoint(branch.ChildThird, code);
-                }
+                return SearchInsertionPoint(branch.ChildFirst, key);
             }
+
+            if (key == branch.LeftKey)
+            {
+                return null;
+            }
+
+            if (key > branch.LeftKey && key < branch.RightKey)
+            {
+                return SearchInsertionPoint(branch.ChildSecond, key);
+            }
+
+            if (key == branch.RightKey)
+            {
+                return null;
+            }
+
+            return SearchInsertionPoint(branch.ChildThird, key);
         }
+
         public bool Remove(string code)
         {
             Branch removeBranch = Search(code);
@@ -97,10 +125,8 @@ namespace _2_3Tree
                 FixingTree(removeBranch, code);
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         void Equivalent(ref Branch removeBranch, ref string code)
@@ -108,18 +134,19 @@ namespace _2_3Tree
             if (!removeBranch.IsLeaf())
             {
                 Branch min;
-                if (removeBranch.LeftCode.str == code)
+                if (removeBranch.LeftKey.ToString == code)
                 {
                     min = SearchMin(removeBranch.ChildSecond);
-                    removeBranch.LeftCode = min.LeftCode;
+                    removeBranch.LeftKey = min.LeftKey;
                 }
                 else
                 {
                     min = SearchMin(removeBranch.ChildThird);
-                    removeBranch.RightCode = min.LeftCode;
+                    removeBranch.RightKey = min.LeftKey;
                 }
+
                 removeBranch = min;
-                code = min.LeftCode.str;
+                code = min.LeftKey.ToString;
             }
         }
 
@@ -127,11 +154,12 @@ namespace _2_3Tree
         {
             if (!currentBranch.NeighborEmpty())
             {
-                if (currentBranch.LeftCode.str == code)
+                if (currentBranch.LeftKey.ToString == code)
                 {
-                    currentBranch.LeftCode = currentBranch.RightCode;
+                    currentBranch.LeftKey = currentBranch.RightKey;
                 }
-                currentBranch.RightCode = null;
+
+                currentBranch.RightKey = null;
             }
             else if (currentBranch == Root)
             {
@@ -153,14 +181,13 @@ namespace _2_3Tree
                     Merge(currentBranch);
                     return;
                 }
-                else
+
+                if (Redistribute(currentBranch, numChild))
                 {
-                    if (Redistribute(currentBranch, numChild))
-                    {
-                        return;
-                    }
-                    Merge(numChild, currentBranch);
+                    return;
                 }
+
+                Merge(numChild, currentBranch);
                 Balancing(currentBranch.Parent);
             }
         }
@@ -169,12 +196,12 @@ namespace _2_3Tree
         {
             if (numChild == 1)
             {
-                if (currentBranch.LeftCode == null)
+                if (currentBranch.LeftKey == null)
                 {
-                    currentBranch.LeftCode = currentBranch.Parent.LeftCode;
+                    currentBranch.LeftKey = currentBranch.Parent.LeftKey;
                     if (currentBranch.Parent.ChildSecond != null)
                     {
-                        currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
+                        currentBranch.RightKey = currentBranch.Parent.ChildSecond.LeftKey;
                         if (currentBranch.Parent.ChildSecond.ChildFirst != null)
                         {
                             currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
@@ -185,35 +212,38 @@ namespace _2_3Tree
                                 currentBranch.ChildThird.Parent = currentBranch;
                             }
                         }
+
                         currentBranch.Parent.ChildSecond = null;
                     }
-                    currentBranch.Parent.LeftCode = null;
+
+                    currentBranch.Parent.LeftKey = null;
                 }
                 else
                 {
-                    currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                    currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
+                    currentBranch.LeftKey = currentBranch.Parent.LeftKey;
+                    currentBranch.RightKey = currentBranch.Parent.ChildSecond.LeftKey;
                     currentBranch.Parent.ChildSecond = null;
-                    currentBranch.Parent.LeftCode = null;
+                    currentBranch.Parent.LeftKey = null;
                 }
             }
             else if (numChild == 2)
             {
-                if (currentBranch.LeftCode == null)
+                if (currentBranch.LeftKey == null)
                 {
-                    currentBranch.Parent.ChildFirst.RightCode = currentBranch.Parent.LeftCode;
+                    currentBranch.Parent.ChildFirst.RightKey = currentBranch.Parent.LeftKey;
                     if (currentBranch.ChildFirst != null)
                     {
                         currentBranch.Parent.ChildFirst.ChildThird = currentBranch.ChildFirst;
                         currentBranch.Parent.ChildFirst.ChildThird.Parent = currentBranch.Parent.ChildFirst;
                     }
-                    currentBranch.Parent.LeftCode = null;
+
+                    currentBranch.Parent.LeftKey = null;
                     currentBranch.Parent.ChildSecond = null;
                 }
                 else
                 {
-                    currentBranch.Parent.ChildFirst.RightCode = currentBranch.Parent.LeftCode;
-                    currentBranch.Parent.LeftCode = null;
+                    currentBranch.Parent.ChildFirst.RightKey = currentBranch.Parent.LeftKey;
+                    currentBranch.Parent.LeftKey = null;
                     currentBranch.Parent.ChildSecond = null;
                 }
             }
@@ -231,16 +261,16 @@ namespace _2_3Tree
             Branch parent = currentBranch.Parent;
             if (!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty())
             {
-                Code code = currentBranch.LeftCode;
+                Key key = currentBranch.LeftKey;
                 if (numChild == 1)
                 {
                     if (!currentBranch.Parent.ChildSecond.NeighborEmpty())
                     {
-                        currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                        currentBranch.Parent.LeftCode = currentBranch.Parent.ChildSecond.LeftCode;
-                        currentBranch.Parent.ChildSecond.LeftCode = currentBranch.Parent.ChildSecond.RightCode;
-                        currentBranch.Parent.ChildSecond.RightCode = null;
-                        if (code == null)
+                        currentBranch.LeftKey = currentBranch.Parent.LeftKey;
+                        currentBranch.Parent.LeftKey = currentBranch.Parent.ChildSecond.LeftKey;
+                        currentBranch.Parent.ChildSecond.LeftKey = currentBranch.Parent.ChildSecond.RightKey;
+                        currentBranch.Parent.ChildSecond.RightKey = null;
+                        if (key == null)
                         {
                             currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
                             currentBranch.ChildSecond.Parent = currentBranch;
@@ -253,33 +283,35 @@ namespace _2_3Tree
                     {
                         if (currentBranch.Parent.ChildThird.NeighborEmpty())
                         {
-                            currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                            currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
-                            currentBranch.Parent.LeftCode = currentBranch.Parent.RightCode;
-                            currentBranch.Parent.RightCode = null;
-                            if (code == null)
+                            currentBranch.LeftKey = currentBranch.Parent.LeftKey;
+                            currentBranch.RightKey = currentBranch.Parent.ChildSecond.LeftKey;
+                            currentBranch.Parent.LeftKey = currentBranch.Parent.RightKey;
+                            currentBranch.Parent.RightKey = null;
+                            if (key == null)
                             {
                                 currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
                                 currentBranch.ChildSecond.Parent = currentBranch;
                                 currentBranch.ChildThird = currentBranch.Parent.ChildSecond.ChildSecond;
                                 currentBranch.ChildThird.Parent = currentBranch;
                             }
+
                             currentBranch.Parent.ChildSecond = currentBranch.Parent.ChildThird;
                             currentBranch.Parent.ChildThird = null;
                         }
                         else
                         {
-                            currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                            currentBranch.Parent.LeftCode = currentBranch.Parent.RightCode;
-                            currentBranch.Parent.RightCode = null;
-                            currentBranch.RightCode = currentBranch.Parent.ChildSecond.LeftCode;
-                            if (code == null)
+                            currentBranch.LeftKey = currentBranch.Parent.LeftKey;
+                            currentBranch.Parent.LeftKey = currentBranch.Parent.RightKey;
+                            currentBranch.Parent.RightKey = null;
+                            currentBranch.RightKey = currentBranch.Parent.ChildSecond.LeftKey;
+                            if (key == null)
                             {
                                 currentBranch.ChildSecond = currentBranch.Parent.ChildSecond.ChildFirst;
                                 currentBranch.ChildSecond.Parent = currentBranch;
                                 currentBranch.ChildThird = currentBranch.Parent.ChildSecond.ChildSecond;
                                 currentBranch.ChildThird.Parent = currentBranch;
                             }
+
                             currentBranch.Parent.ChildSecond = currentBranch.Parent.ChildThird;
                             currentBranch.Parent.ChildThird = null;
                         }
@@ -290,10 +322,10 @@ namespace _2_3Tree
                     if (!currentBranch.Parent.ChildFirst.NeighborEmpty())
                     {
                         Branch first = currentBranch.Parent.ChildFirst;
-                        currentBranch.LeftCode = currentBranch.Parent.LeftCode;
-                        currentBranch.Parent.LeftCode = currentBranch.Parent.ChildFirst.RightCode;
-                        currentBranch.Parent.ChildFirst.RightCode = null;
-                        if (code == null)
+                        currentBranch.LeftKey = currentBranch.Parent.LeftKey;
+                        currentBranch.Parent.LeftKey = currentBranch.Parent.ChildFirst.RightKey;
+                        currentBranch.Parent.ChildFirst.RightKey = null;
+                        if (key == null)
                         {
                             currentBranch.ChildSecond = currentBranch.ChildFirst;
                             currentBranch.ChildFirst = first.ChildThird;
@@ -306,25 +338,26 @@ namespace _2_3Tree
                         if (currentBranch.Parent.ChildThird.NeighborEmpty())
                         {
                             Branch first = currentBranch.Parent.ChildFirst;
-                            first.RightCode = currentBranch.Parent.LeftCode;
-                            currentBranch.Parent.LeftCode = currentBranch.Parent.RightCode;
-                            currentBranch.Parent.RightCode = null;
-                            if (code == null)
+                            first.RightKey = currentBranch.Parent.LeftKey;
+                            currentBranch.Parent.LeftKey = currentBranch.Parent.RightKey;
+                            currentBranch.Parent.RightKey = null;
+                            if (key == null)
                             {
                                 first.ChildThird = currentBranch.ChildFirst;
                                 first.ChildThird.Parent = first;
                             }
+
                             currentBranch.Parent.ChildSecond = currentBranch.Parent.ChildThird;
                             currentBranch.Parent.ChildThird = null;
                         }
                         else
                         {
                             Branch third = currentBranch.Parent.ChildThird;
-                            currentBranch.LeftCode = currentBranch.Parent.RightCode;
-                            currentBranch.Parent.RightCode = currentBranch.Parent.ChildThird.LeftCode;
-                            currentBranch.Parent.ChildThird.LeftCode = currentBranch.Parent.ChildThird.RightCode;
-                            currentBranch.Parent.ChildThird.RightCode = null;
-                            if (code == null)
+                            currentBranch.LeftKey = currentBranch.Parent.RightKey;
+                            currentBranch.Parent.RightKey = currentBranch.Parent.ChildThird.LeftKey;
+                            currentBranch.Parent.ChildThird.LeftKey = currentBranch.Parent.ChildThird.RightKey;
+                            currentBranch.Parent.ChildThird.RightKey = null;
+                            if (key == null)
                             {
                                 currentBranch.ChildSecond = third.ChildFirst;
                                 currentBranch.ChildSecond.Parent = currentBranch;
@@ -339,10 +372,10 @@ namespace _2_3Tree
                 {
                     if (!currentBranch.Parent.ChildSecond.NeighborEmpty())
                     {
-                        currentBranch.LeftCode = currentBranch.Parent.RightCode;
-                        currentBranch.Parent.RightCode = currentBranch.Parent.ChildSecond.RightCode;
-                        currentBranch.Parent.ChildSecond.RightCode = null;
-                        if (code == null)
+                        currentBranch.LeftKey = currentBranch.Parent.RightKey;
+                        currentBranch.Parent.RightKey = currentBranch.Parent.ChildSecond.RightKey;
+                        currentBranch.Parent.ChildSecond.RightKey = null;
+                        if (key == null)
                         {
                             currentBranch.ChildSecond = currentBranch.ChildFirst;
                             currentBranch.ChildFirst = currentBranch.Parent.ChildSecond.ChildThird;
@@ -352,18 +385,21 @@ namespace _2_3Tree
                     }
                     else
                     {
-                        currentBranch.Parent.ChildSecond.RightCode = currentBranch.Parent.RightCode;
-                        currentBranch.Parent.RightCode = null;
-                        if (code == null)
+                        currentBranch.Parent.ChildSecond.RightKey = currentBranch.Parent.RightKey;
+                        currentBranch.Parent.RightKey = null;
+                        if (key == null)
                         {
                             currentBranch.Parent.ChildSecond.ChildThird = currentBranch.ChildFirst;
                             currentBranch.Parent.ChildSecond.ChildThird.Parent = currentBranch.Parent.ChildSecond;
                         }
+
                         currentBranch.Parent.ChildThird = null;
                     }
                 }
+
                 return true;
             }
+
             return false;
         }
 
@@ -373,101 +409,98 @@ namespace _2_3Tree
             {
                 return null;
             }
-            else if (currentBranch.ChildFirst == null)
+
+            if (currentBranch.ChildFirst == null)
             {
                 return currentBranch;
             }
-            else
-            {
-                return SearchMin(currentBranch.ChildFirst);
-            }
+
+            return SearchMin(currentBranch.ChildFirst);
         }
+
         public Branch Search(string strCode)
         {
-            return Search(new Code(strCode), Root);
+            return Search(new Key(strCode), Root);
         }
-        public Branch Search(Code code, Branch currentBranch)
+
+        public Branch Search(Key key, Branch currentBranch)
         {
             if (currentBranch != null)
             {
-                if (currentBranch.LeftCode == code || (currentBranch.RightCode != null && currentBranch.RightCode == code))
+                if (currentBranch.LeftKey == key ||
+                    (currentBranch.RightKey != null && currentBranch.RightKey == key))
                 {
                     return currentBranch;
                 }
-                else if (currentBranch.NeighborEmpty())
+
+                if (currentBranch.NeighborEmpty())
                 {
-                    if (code < currentBranch.LeftCode)
+                    if (key < currentBranch.LeftKey)
                     {
-                        return Search(code, currentBranch.ChildFirst);
+                        return Search(key, currentBranch.ChildFirst);
                     }
-                    else
-                    {
-                        return Search(code, currentBranch.ChildSecond);
-                    }
+
+                    return Search(key, currentBranch.ChildSecond);
                 }
-                else
+
+                if (key < currentBranch.LeftKey)
                 {
-                    if (code < currentBranch.LeftCode)
-                    {
-                        return Search(code, currentBranch.ChildFirst);
-                    }
-                    else if (code >= currentBranch.LeftCode && code < currentBranch.RightCode)
-                    {
-                        return Search(code, currentBranch.ChildSecond);
-                    }
-                    else
-                    {
-                        return Search(code, currentBranch.ChildThird);
-                    }
+                    return Search(key, currentBranch.ChildFirst);
                 }
+
+                if (key >= currentBranch.LeftKey && key < currentBranch.RightKey)
+                {
+                    return Search(key, currentBranch.ChildSecond);
+                }
+
+                return Search(key, currentBranch.ChildThird);
             }
+
             return null;
         }
 
-        public Branch Search(Code code, Branch currentBranch,ref int countBranch,ref int s)
+        public Branch Search(Key key, Branch currentBranch, ref int countBranch, ref int s)
         {
             if (currentBranch != null)
             {
                 s++;
                 countBranch++;
-                if (currentBranch.LeftCode == code || (currentBranch.RightCode != null && currentBranch.RightCode == code))
+                if (currentBranch.LeftKey == key ||
+                    (currentBranch.RightKey != null && currentBranch.RightKey == key))
                 {
                     return currentBranch;
                 }
-                else if (currentBranch.NeighborEmpty())
+
+                if (currentBranch.NeighborEmpty())
                 {
                     s++;
-                    if (code < currentBranch.LeftCode)
+                    if (key < currentBranch.LeftKey)
                     {
                         s++;
-                        return Search(code, currentBranch.ChildFirst,ref countBranch, ref s);
+                        return Search(key, currentBranch.ChildFirst, ref countBranch, ref s);
                     }
-                    else
-                    {
-                        s++;
-                        return Search(code, currentBranch.ChildSecond, ref countBranch, ref s);
-                    }
+
+                    s++;
+                    return Search(key, currentBranch.ChildSecond, ref countBranch, ref s);
                 }
-                else
+
+                s++;
+                if (key < currentBranch.LeftKey)
                 {
                     s++;
-                    if (code < currentBranch.LeftCode)
-                    {
-                        s++;
-                        return Search(code, currentBranch.ChildFirst, ref countBranch, ref s);
-                    }
-                    else if (code >= currentBranch.LeftCode && code < currentBranch.RightCode)
-                    {
-                        s += 3;
-                        return Search(code, currentBranch.ChildSecond, ref countBranch, ref s);
-                    }
-                    else
-                    {
-                        s += 3;
-                        return Search(code, currentBranch.ChildThird, ref countBranch, ref s);
-                    }
+                    return Search(key, currentBranch.ChildFirst, ref countBranch, ref s);
                 }
+
+                if (key >= currentBranch.LeftKey && key < currentBranch.RightKey)
+                {
+                    s += 3;
+                    return Search(key, currentBranch.ChildSecond, ref countBranch, ref s);
+                }
+
+                s += 3;
+                return Search(key, currentBranch.ChildThird, ref countBranch, ref s);
             }
+
             return null;
         }
 
@@ -475,10 +508,12 @@ namespace _2_3Tree
         {
             ShowBranch(node, Root, foundBranch);
         }
+
         public void ShowTree(TreeNodeCollection node)
         {
             ShowBranch(node, Root);
         }
+
         void ShowBranch(TreeNodeCollection node, Branch currentBranch)
         {
             AddNodeToTreeView(currentBranch, out TreeNode nodeInside, node);
@@ -486,17 +521,20 @@ namespace _2_3Tree
             TransitionToChild(currentBranch.ChildSecond, nodeInside);
             TransitionToChild(currentBranch.ChildThird, nodeInside);
         }
+
         void ShowBranch(TreeNodeCollection node, Branch currentBranch, Branch foundBranch)
         {
             AddNodeToTreeView(currentBranch, out TreeNode nodeInside, node);
             if (foundBranch == currentBranch)
             {
-                nodeInside.BackColor = System.Drawing.Color.Red;
+                nodeInside.BackColor = Color.Red;
             }
+
             TransitionToChild(currentBranch.ChildFirst, nodeInside, foundBranch);
             TransitionToChild(currentBranch.ChildSecond, nodeInside, foundBranch);
             TransitionToChild(currentBranch.ChildThird, nodeInside, foundBranch);
         }
+
         void AddNodeToTreeView(Branch currentBranch, out TreeNode nodeInside, TreeNodeCollection node)
         {
             if (currentBranch.Parent != null)
@@ -505,7 +543,8 @@ namespace _2_3Tree
                 {
                     nodeInside = node.Add(BuildStrCode("L", currentBranch));
                 }
-                else if (currentBranch.Parent.ChildSecond == currentBranch && currentBranch.Parent.ChildThird == null || currentBranch.Parent.ChildThird == currentBranch)
+                else if ((currentBranch.Parent.ChildSecond == currentBranch &&
+                          currentBranch.Parent.ChildThird == null) || currentBranch.Parent.ChildThird == currentBranch)
                 {
                     nodeInside = node.Add(BuildStrCode("R", currentBranch));
                 }
@@ -522,14 +561,40 @@ namespace _2_3Tree
 
         string BuildStrCode(string type, Branch branch)
         {
-            if(branch.RightCode==null)
+            if (branch.RightKey == null)
             {
-                return type + "<" + branch.LeftCode.str + ">";
+                return type + "<" + branch.LeftKey.ToString + ">";
             }
-            else
+
+            return type + "<" + branch.LeftKey.ToString + "><" + branch.RightKey.ToString + ">";
+        }
+
+        string ToStringType(Branch branch)
+        {
+            if (branch != null)
             {
-                return type + "<" + branch.LeftCode.str + "><" + branch.RightCode.str + ">";
+                if (!branch.IsLeaf())
+                {
+                    if (branch.RightKey != null)
+                    {
+                        return branch.LeftKey.ToString + ":" + branch.RightKey.ToString + "(" +
+                               ToStringType(branch.ChildFirst) + "|" +
+                               ToStringType(branch.ChildSecond) + "|" + ToStringType(branch.ChildThird) + ")";
+                    }
+
+                    return branch.LeftKey.ToString + "(" + ToStringType(branch.ChildFirst) + "|" +
+                           ToStringType(branch.ChildSecond) + ")";
+                }
+
+                if (branch.RightKey != null)
+                {
+                    return "(" + branch.LeftKey.ToString + ":" + branch.RightKey.ToString + ")";
+                }
+
+                return branch.LeftKey.ToString;
             }
+
+            return string.Empty;
         }
 
         void TransitionToChild(Branch childBranch, TreeNode nodeInside)
@@ -539,21 +604,13 @@ namespace _2_3Tree
                 ShowBranch(nodeInside.Nodes, childBranch);
             }
         }
+
         void TransitionToChild(Branch childBranch, TreeNode nodeInside, Branch foundBranch)
         {
             if (childBranch != null)
             {
                 ShowBranch(nodeInside.Nodes, childBranch, foundBranch);
             }
-        }
-
-        public Tree()
-        {
-            Root = null;
-        }
-        public Tree(Branch Root)
-        {
-            this.Root = Root;
         }
     }
 }

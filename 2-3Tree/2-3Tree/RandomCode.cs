@@ -2,9 +2,10 @@
 
 namespace _2_3Tree
 {
-    class RandomCode
+    static class RandomCode
     {
-        static Random rnd = new Random();
+        static readonly Random rnd = new Random();
+
         public static string Random()
         {
             string code = string.Empty;
@@ -20,6 +21,7 @@ namespace _2_3Tree
                     code += Convert.ToChar(rnd.Next(97, 123));
                 }
             }
+
             return code;
         }
     }
