@@ -25,6 +25,8 @@ namespace _2_3Tree
             {
                 StatusBar.Text = @"Ключ: " + textBoxSearch.Text + @" - найден; Время: " +
                                  stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс";
+                Tree.Logger.Info(@"Ключ: " + textBoxSearch.Text + @" - найден; Время операции: " +
+                                 stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс");
                 treeBox.Nodes.Clear();
                 if (tree.Root != null)
                 {
@@ -37,6 +39,8 @@ namespace _2_3Tree
             {
                 StatusBar.Text = @"Ключ: " + textBoxSearch.Text + @" - не найден; Время: " +
                                  stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс";
+                Tree.Logger.Info(@"Ключ: " + textBoxSearch.Text + @" - не найден; Время операции: " +
+                                 stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс");
                 TreeDrawing();
             }
         }

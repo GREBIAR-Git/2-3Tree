@@ -1,10 +1,13 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using NLog;
 
 namespace _2_3Tree
 {
     public class Tree
     {
+        public static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         Branch root;
 
         public Tree()
@@ -43,12 +46,14 @@ namespace _2_3Tree
             if (Root == null)
             {
                 Root = new Branch(newKey);
+                Logger.Debug("Добавлен в корень дерева");
             }
             else
             {
                 Branch currentBranch = SearchInsertionPoint(Root, newKey);
                 if (currentBranch == null)
                 {
+                    Logger.Warn($"Повторное добавление запрещено ({code}-уже есть)");
                     return false;
                 }
 
@@ -59,10 +64,12 @@ namespace _2_3Tree
                 else
                 {
                     currentBranch.SetCenter(newKey);
+                    Logger.Debug("Разбиение ветки");
                     currentBranch.SplitBranch(ref root);
                 }
             }
 
+            Logger.Info($"Вставка элемнета {code} прошла успешно");
             return true;
         }
 
@@ -167,6 +174,7 @@ namespace _2_3Tree
             }
             else
             {
+                Logger.Debug("Балансировка дерева");
                 Balancing(currentBranch);
             }
         }
@@ -194,6 +202,7 @@ namespace _2_3Tree
 
         void Merge(int numChild, Branch currentBranch)
         {
+            Logger.Debug("Операция склеивания");
             if (numChild == 1)
             {
                 if (currentBranch.LeftKey == null)
@@ -258,6 +267,7 @@ namespace _2_3Tree
 
         bool Redistribute(Branch currentBranch, int numChild)
         {
+            Logger.Debug("Операция распределения");
             Branch parent = currentBranch.Parent;
             if (!parent.ChildFirst.NeighborEmpty() || !parent.ChildSecond.NeighborEmpty() || !parent.NeighborEmpty())
             {
@@ -425,6 +435,7 @@ namespace _2_3Tree
 
         public Branch Search(Key key, Branch currentBranch)
         {
+            Logger.Debug($"Поиск ключа - {key} в дереве");
             if (currentBranch != null)
             {
                 if (currentBranch.LeftKey == key ||

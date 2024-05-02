@@ -2,6 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 
 namespace _2_3Tree
 {
@@ -12,7 +15,18 @@ namespace _2_3Tree
         public MainForm()
         {
             InitializeComponent();
+            var config = new LoggingConfiguration();
+
+            var logfile = new FileTarget("logfile") { FileName = "file.txt" };
+
+
+            config.AddRule(LogLevel.Debug, LogLevel.Fatal, logfile);
+            //config.AddRule(LogLevel.Info, LogLevel.Info, logfile);
+ 
+            LogManager.Configuration = config;
+
             StatusBar.Text = @"Программа инициализирована";
+            Tree.Logger.Debug("Программа инициализирована");
             tree = new Tree();
             //timeTest();
             //sizeTest();
@@ -84,6 +98,8 @@ namespace _2_3Tree
                     stopwatch.Stop();
                     StatusBar.Text = @"Ключ: " + textBoxAdd.Text + @" - успешно добавлен; Время: " +
                                      stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс";
+                    Tree.Logger.Info("Ключ: " + textBoxAdd.Text + @" - успешно добавлен; Время операции: " +
+                                     stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс");
                     TreeDrawing();
                 }
                 else
@@ -91,11 +107,14 @@ namespace _2_3Tree
                     stopwatch.Stop();
                     StatusBar.Text = @"Ключ: " + textBoxAdd.Text + @" - уже существует; Время: " +
                                      stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс";
+                    Tree.Logger.Info(@"Ключ: " + textBoxAdd.Text + @" - уже существует; Время операции: " +
+                                     stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс");
                 }
             }
             else
             {
                 StatusBar.Text = @"Поле с ключом пустое";
+                Tree.Logger.Warn("Поле с ключом пустое");
             }
         }
 
@@ -127,6 +146,8 @@ namespace _2_3Tree
                     stopwatch.Stop();
                     StatusBar.Text = @"Ключ: " + textBoxDel.Text + @" - удалён; Время: " +
                                      stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс";
+                    Tree.Logger.Info(@"Ключ: " + textBoxDel.Text + @" - удалён; Время операции: " +
+                                     stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс");
                     TreeDrawing();
                 }
                 else
@@ -134,11 +155,14 @@ namespace _2_3Tree
                     stopwatch.Stop();
                     StatusBar.Text = @"Ключ: " + textBoxDel.Text + @" - не существует; Время: " +
                                      stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс";
+                    Tree.Logger.Info("Ключ: " + textBoxDel.Text + @" - не существует; Время операции: " +
+                                     stopwatch.Elapsed.TotalMilliseconds * 1000000 + @" нс");
                 }
             }
             else
             {
                 StatusBar.Text = @"Поле с ключом пустое";
+                Tree.Logger.Warn("Поле с ключом пустое");
             }
         }
 
@@ -208,6 +232,7 @@ namespace _2_3Tree
             textBoxDel.Text = string.Empty;
             textBoxSearch.Text = string.Empty;
             StatusBar.Text = @"Дерево полностью удалено";
+            Tree.Logger.Info("Дерево полностью удалено");
             TreeDrawing();
         }
 
@@ -225,6 +250,7 @@ namespace _2_3Tree
             TreeDrawing();
             treeBox.ResumeLayout();
             StatusBar.Text = @"К дереву добавлено 10 ключей";
+            Tree.Logger.Info("К дереву добавлено 10 ключей");
         }
 
         void TextBoxSearch_Enter(object sender, EventArgs e)
